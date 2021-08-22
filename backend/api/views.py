@@ -1,3 +1,4 @@
+from django.http.response import JsonResponse
 from django.shortcuts import render
 from rest_framework.serializers import Serializer
 from .models import Task, Project
@@ -44,4 +45,4 @@ def registration_view(request):
             data['username'] = user.username
         else:
             data = serializer.errors
-        return Response(data)
+        return JsonResponse(data)
