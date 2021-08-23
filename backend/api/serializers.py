@@ -3,17 +3,18 @@ from rest_framework import serializers
 from .models import Task, Project
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
+from django.contrib.auth import authenticate, login, logout
 
 class RegistrationSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all())])
     password = serializers.CharField(
-                        min_length=6, 
+                        min_length=8, 
                         write_only=True,
                         required=True,
                         style={'input_type': 'password'}
                         )
     password2 = serializers.CharField(
-                        min_length=6, 
+                        min_length=8, 
                         write_only=True,
                         required=True,
                         style={'input_type': 'password'}
@@ -43,10 +44,25 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return user
 
 
-class UserSerializer(serializers.ModelSerializer):
+class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["email", "username", "password"]
+        fields = ["email", "password"]
+    
+    # def loginAccount(self):
+    #     email = self.validated_data['email']
+    #     password = self.validated_data['password']
+    #     if email and password:
+    #         email_qs = User.objects.filter(email=email)
+    #         if not email_qs.exists():
+    #             raise serializers.ValidationError({'email': "Email doesn't exist"})
+    #         else:
+    #             user = authenticate(email=email, password=password)  
+    #             print(email, password)
+    #             if not user:
+    #                 raise serializers.ValidationError("Incorrect password. Please try again!")
+    #     return user
+
         
 
 class ProjectSerializer(serializers.ModelSerializer):

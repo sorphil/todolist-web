@@ -1,10 +1,12 @@
+import json
+from django.contrib import auth
 from django.http.response import JsonResponse
 from django.shortcuts import render
 from rest_framework.serializers import Serializer
+from django.contrib.auth import authenticate, login, logout
 from .models import Task, Project
-from rest_framework.response import Response
 from django.contrib.auth.models import User
-from .serializers import RegistrationSerializer
+from .serializers import LoginSerializer, RegistrationSerializer, LoginSerializer
 from rest_framework.decorators import api_view
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated, IsAuthenticatedOrReadOnly, BasePermission, IsAdminUser, DjangoModelPermissions
 # Create your views here.
@@ -46,3 +48,37 @@ def registration_view(request):
         else:
             data = serializer.errors
         return JsonResponse(data)
+
+@api_view(['POST'])
+def login_view(request):
+    if request.method == "POST":
+        # serializer = LoginSerializer(data=request.data)
+        data = {}
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        username = User.objects.get(email=body['email']).username
+        user = authenticate(username = username, password=body['password'])
+        if user is not None:
+            login(request, user)
+            data['response2'] = f"Current user is {request.user}"
+            data['response'] = "Logged In"
+        else:
+            data['response'] = "User doesn't exist / Wrong credentials or password"
+            
+        return JsonResponse(data)
+
+@api_view(['POST'])
+def logout_view(request):
+    data = {}
+    data['response'] = "Logged Out"
+    logout(request)
+  
+    return JsonResponse(data)
+
+
+@api_view(['POST'])
+def check_view(request):
+    data = {}
+    data['response'] = f"Current user is {request.user}"
+  
+    return JsonResponse(data)

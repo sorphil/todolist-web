@@ -34,4 +34,55 @@ document.addEventListener('DOMContentLoaded', ()=>{
             console.log(data)
         });
     })
+
+    loginForm = document.querySelector('#loginForm')
+    loginForm.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        let email = document.querySelector('#loginEmail').value
+        let password = document.querySelector('#loginPassword').value
+        let data = {
+                "email": email,
+                "password": password,
+            }
+
+        fetch("http://127.0.0.1:8000/todos/api/v1/login", {
+            method: "POST",
+            headers: headers,
+            body:  JSON.stringify(data)
+        })
+        .then(function(response){ 
+           return response.json()
+        })
+        .then(function(data){ 
+            console.log(data)
+        });
+    })
+    logoutForm = document.querySelector('#logoutForm')
+    logoutForm.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        fetch("http://127.0.0.1:8000/todos/api/v1/logout", {
+            method: "POST",
+            headers: headers,
+        })
+        .then(function(response){ 
+           return response.json()
+        })
+        .then(function(data){ 
+            console.log(data)
+        });
+    })
+    checkForm = document.querySelector('#checkForm')
+    checkForm.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        fetch("http://127.0.0.1:8000/todos/api/v1/check", {
+            method: "POST",
+            headers: headers,
+        })
+        .then(function(response){ 
+           return response.json()
+        })
+        .then(function(data){ 
+            console.log(data)
+        });
+    })
 })
