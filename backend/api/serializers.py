@@ -48,32 +48,16 @@ class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["email", "password"]
-    
-    # def loginAccount(self):
-    #     email = self.validated_data['email']
-    #     password = self.validated_data['password']
-    #     if email and password:
-    #         email_qs = User.objects.filter(email=email)
-    #         if not email_qs.exists():
-    #             raise serializers.ValidationError({'email': "Email doesn't exist"})
-    #         else:
-    #             user = authenticate(email=email, password=password)  
-    #             print(email, password)
-    #             if not user:
-    #                 raise serializers.ValidationError("Incorrect password. Please try again!")
-    #     return user
 
         
 
 class ProjectSerializer(serializers.ModelSerializer):
-    user = serializers.RelatedField(source = "user", read_only = True)
     class Meta:
         model = Project
-        fields = ["title", "user"]
+        fields =  '__all__'
 
 class TaskSerializer(serializers.ModelSerializer):
-    user = serializers.RelatedField(source = "user", read_only = True)
-    project = serializers.RelatedField(source = "project", read_only = True)
+    user_name = serializers.CharField(source="User.username", read_only=True)
     class Meta:
         model = Task
-        fields = ["title", "completed", "pub_date", "due_date", "user", "project"]
+        fields =  '__all__'
