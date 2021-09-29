@@ -1,6 +1,7 @@
 import json
 from django.contrib import auth
 from django.http.response import JsonResponse
+from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from django.shortcuts import render
 from rest_framework.serializers import Serializer
@@ -93,8 +94,10 @@ def registration_view(request):
             data['response'] = "Successfully registered a new user"
             data['email'] = user.email
             data['username'] = user.username
+            data['token']= Token.objects.get(user=user).key
         else:
             data = serializer.errors
+        
         return JsonResponse(data)
 
 @api_view(['POST'])
@@ -107,8 +110,9 @@ def login_view(request):
         username = User.objects.get(email=body['email']).username
         user = authenticate(username = username, password=body['password'])
         if user is not None:
-            login(request, user)
-            data['response2'] = f"Current user is {request.user}"
+            token = Token.objects.create(user=user)
+            data['token'] = token.key
+            data['response2'] = f"Current user is {user}"
             data['response'] = "Logged In"
         else:
             data['response'] = "User doesn't exist / Wrong credentials or password"
@@ -119,7 +123,7 @@ def login_view(request):
 def logout_view(request):
     data = {}
     data['response'] = "Logged Out"
-    logout(request)
+    Token.objects.get(user=request.user).delete()
   
     return JsonResponse(data)
 

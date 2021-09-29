@@ -1,27 +1,28 @@
 import "./styles/styles.scss"
-var headers = {
-    "Content-Type": "application/json", }                                                                                               
-//     "Access-Control-Origin": "*",
-//     "Access-Control-Allow-Headers": "Accept"
-//  }
+let headers = {
+    "Content-Type": "application/json",                                                                                            
+    // "Access-Control-Origin": "*",
+    // "Access-Control-Allow-Headers": "Accept"
+ }
 
 document.addEventListener('DOMContentLoaded', ()=>{
-    registrationForm = document.querySelector('#registrationForm')
+    
+    let registrationForm = document.querySelector('#registration-form')
     registrationForm.addEventListener('submit', (e)=>{
         e.preventDefault();
-        let email = document.querySelector('#registrationEmail').value
-        let username = document.querySelector('#registrationUsername').value
-        let password = document.querySelector('#registrationPassword').value
-        let password2 = document.querySelector('#registrationPassword2').value
+        let email = document.querySelector('#registration-email-input').value
+        let username = document.querySelector('#registration-username-input').value
+        let password = document.querySelector('#registration-password-input').value
+        let confirm = document.querySelector('#registration-confirm-input').value
         let data = {
             "email": email,
             "username": username,
             "password": password,
-            "password2": password2
+            "confirm": confirm
         }
 
         console.log(data)
-
+        
         fetch("http://127.0.0.1:8000/todos/api/v1/register", {
             method: "POST",
             headers: headers,
@@ -31,15 +32,17 @@ document.addEventListener('DOMContentLoaded', ()=>{
            return response.json()
         })
         .then(function(data){ 
+            window.localStorage.setItem('token', data.token)
             console.log(data)
         });
     })
 
-    loginForm = document.querySelector('#loginForm')
+    let loginForm = document.querySelector('#login-form')
     loginForm.addEventListener('submit', (e)=>{
         e.preventDefault();
-        let email = document.querySelector('#loginEmail').value
-        let password = document.querySelector('#loginPassword').value
+        console.log(headers)
+        let email = document.querySelector('#login-email-input').value
+        let password = document.querySelector('#login-password-input').value
         let data = {
                 "email": email,
                 "password": password,
@@ -54,12 +57,14 @@ document.addEventListener('DOMContentLoaded', ()=>{
            return response.json()
         })
         .then(function(data){ 
+            window.localStorage.setItem('token', data.token)
             console.log(data)
         });
     })
-    logoutForm = document.querySelector('#logoutForm')
+    let logoutForm = document.querySelector('#logoutForm')
     logoutForm.addEventListener('submit', (e)=>{
         e.preventDefault();
+        headers["Authorization"] = `Token ${window.localStorage.getItem('token')}`
         fetch("http://127.0.0.1:8000/todos/api/v1/logout", {
             method: "POST",
             headers: headers,
@@ -68,12 +73,17 @@ document.addEventListener('DOMContentLoaded', ()=>{
            return response.json()
         })
         .then(function(data){ 
+            window.localStorage.setItem('token', "")
+            delete headers['Authorization']
+            console.log(headers)
             console.log(data)
         });
     })
-    checkForm = document.querySelector('#checkForm')
+    let checkForm = document.querySelector('#checkForm')
     checkForm.addEventListener('submit', (e)=>{
         e.preventDefault();
+        headers["Authorization"] = `Token ${window.localStorage.getItem('token')}`
+        console.log(headers)
         fetch("http://127.0.0.1:8000/todos/api/v1/check", {
             method: "POST",
             headers: headers,

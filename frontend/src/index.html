@@ -10,20 +10,57 @@
         <script src="./main.js"></script>
     </head>
     <body>
-        <h1>Register</h1>
-        <form method ="post" id="registrationForm" class = "form">
-            <input type="email" placeholder="email" id = "registrationEmail">
-            <input type="text" placeholder="username"  id = "registrationUsername">
-            <input type ="password" placeholder="password"  id = "registrationPassword">
-            <input type ="password" placeholder="password2"  id = "registrationPassword2">
-            <input type = "submit" id = "registrationSubmit">
-        </form>
-        <h1>Login</h1>
-        <form method ="post" id="loginForm" class = "form">
-            <input type="email" placeholder="email" id = "loginEmail">
-            <input type ="password" placeholder="password"  id = "loginPassword">
-            <input type = "submit" id = "loginSubmit">
-        </form>
+        <div class = "form-container">
+            <div class = "form-header">
+                <h1>Login To Your Account</h1>
+            </div>
+            <div class = "form-block">
+                <form id = "login-form" method = "post">
+                    <div id = "login-email" class = "form-group">
+                        <input id = "login-email-input" type = "text" class = "form-input" placeholder="Email">
+                        <label for = "login-email-input" class = "form-label">Email</label>
+                    </div>
+                    <div id = "login-password" class = "form-group">
+                        <input id = "login-password-input" type = "password" class = "form-input" placeholder="Username">
+                        <label for = "login-password-input" class = "form-label">Password</label>
+                    </div>
+                    <div id = "login-button" class = "form-group">
+                        <button id = "login-button-input" class = "form-button">Log In</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class = "form-container">
+            <div class = "form-header">
+               <h1>Create An Account</h1>
+            </div>
+            <div class = "form-block" method = "post">
+                <form id = "registration-form">
+                    <div id = "registration-username" class = "form-group">
+                        <input id = "registration-username-input" type = "text" class = "form-input" placeholder="Username">
+                        <label for = "registration-username-input" class = "form-label">Username</label>
+                    </div>
+                    <div id = "registration-email" class = "form-group">
+                        <input id = "registration-email-input" type = "text" class = "form-input" placeholder="Email">
+                        <label for = "registration-email-input" class = "form-label">Email</label>
+                    </div>
+                    <div id = "registration-password" class = "form-group">
+                        <input id = "registration-password-input" type = "password" class = "form-input" placeholder="Username">
+                        <label for = "registration-password-input" class = "form-label">Password</label>
+                    </div>
+                    <div id = "registration-confirm" class = "form-group">
+                        <input id = "registration-confirm-input" type = "password" class = "form-input" placeholder="Email">
+                        <label for = "registration-confirm-input" class = "form-label">Confirm Password</label>
+                    </div>
+                    <div id = "registration-button" class = "form-group">
+                        <button id = "registration-button-input" class = "form-button">Register</button>
+                    </div>
+                    <!-- <div id = "form-navs" class = "form-group">
+                        <span id = "form-navs-text">Not registered?</span> <span id = "form-navs-link">Create an account</span>
+                    </div> -->
+                </form>
+            </div>
+        </div>
         <h1>Logout</h1>
         <form method = "post" id= "logoutForm">
             <input type = "submit" id = "logoutSubmit">
