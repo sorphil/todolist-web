@@ -95,27 +95,30 @@ def registration_view(request):
             data['email'] = user.email
             data['username'] = user.username
             data['token']= Token.objects.get(user=user).key
+            data['success'] = True
         else:
             data = serializer.errors
+            data['success'] = False
         
         return JsonResponse(data)
 
 @api_view(['POST'])
 def login_view(request):
     if request.method == "POST":
-        # serializer = LoginSerializer(data=request.data)
+        serializer = LoginSerializer(data=request.data)
         data = {}
-        body_unicode = request.body.decode('utf-8')
-        body = json.loads(body_unicode)
-        username = User.objects.get(email=body['email']).username
-        user = authenticate(username = username, password=body['password'])
-        if user is not None:
-            token = Token.objects.create(user=user)
+        if serializer.is_valid():
+            user = serializer.loginAccount()
+            data['response'] = "Successfully logged in"
+            try:
+                token = Token.objects.get(user = user)
+            except Token.DoesNotExist:
+                token = Token.objects.create(user=user)
             data['token'] = token.key
-            data['response2'] = f"Current user is {user}"
-            data['response'] = "Logged In"
+            data['success'] = True
         else:
-            data['response'] = "User doesn't exist / Wrong credentials or password"
+            data = serializer.errors 
+            data['success'] = False
             
         return JsonResponse(data)
 
@@ -124,7 +127,6 @@ def logout_view(request):
     data = {}
     data['response'] = "Logged Out"
     Token.objects.get(user=request.user).delete()
-  
     return JsonResponse(data)
 
 
@@ -132,5 +134,5 @@ def logout_view(request):
 def check_view(request):
     data = {}
     data['response'] = f"Current user is {request.user}"
-  
+    
     return JsonResponse(data)

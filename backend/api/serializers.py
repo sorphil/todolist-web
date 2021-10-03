@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db.models import fields
 from rest_framework import serializers
 from .models import Task, Project
@@ -35,7 +36,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
         confirm = self.validated_data['confirm']
 
         user = User.objects.create_user(username=username, email=email)
-
         if password != confirm:
             raise serializers.ValidationError({'password': 'Passwords must match'})
        
@@ -48,6 +48,22 @@ class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["email", "password"]
+    
+    def loginAccount(self):
+        email = self.validated_data['email']
+        password = self.validated_data['password']
+
+        try:
+            username = User.objects.get(email=email).username
+        except User.DoesNotExist:
+            raise serializers.ValidationError({'username': 'No user of that email address exists'})
+        
+        user = authenticate(username = username, password = password)
+        if user is not None:
+            return user
+        else:
+            raise serializers.ValidationError({'password':'Incorrect password'})
+        
 
         
 
