@@ -133,6 +133,28 @@ body, html {
           transform: translateY(-7.5rem) scale(0.6);
 }
 
+.form-input.error {
+  border-color: red;
+}
+
+.form-input.error + .form-label {
+  color: red;
+}
+
+.form-error {
+  color: red;
+  font-size: 1.8rem;
+  -webkit-transform: translateY(9rem);
+          transform: translateY(9rem);
+  opacity: 0;
+}
+
+.form-error.active {
+  opacity: 1;
+  -webkit-transition: all 200ms;
+  transition: all 200ms;
+}
+
 .form-button {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;

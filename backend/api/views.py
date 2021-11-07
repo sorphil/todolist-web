@@ -7,8 +7,8 @@ from django.shortcuts import render
 from rest_framework.serializers import Serializer
 from django.contrib.auth import authenticate, login, logout
 from .models import Task, Project
-from django.contrib.auth.models import User
-from .serializers import LoginSerializer, RegistrationSerializer, LoginSerializer, TaskSerializer
+from django.contrib.auth.models import AnonymousUser, User
+from .serializers import LoginSerializer, ProjectSerializer, RegistrationSerializer, LoginSerializer, TaskSerializer
 from rest_framework.decorators import api_view
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated, IsAuthenticatedOrReadOnly, BasePermission, IsAdminUser, DjangoModelPermissions
 # Create your views here.
@@ -36,6 +36,11 @@ def apiOverview(request):
         "Task-Create":"/todos/api/v1/task-create",
         "Task-Update":"/todos/api/v1/task-update/<str:pk>",
         "Task-Delete":"/todos/api/v1/task-delete/<str:pk>",
+        "Project-List":"/todos/api/v1/project-list",
+        "Project-Detail":"/todos/api/v1/project-detail/<str:pk>",
+        "Project-Create":"/todos/api/v1/project-create",
+        "Project-Update":"/todos/api/v1/project-update/<str:pk>",
+        "Project-Delete":"/todos/api/v1/project-delete/<str:pk>",
         "Register": "/todos/api/v1/register",
         "Login": "/todos/api/v1/login",
         "Logout": "/todos/api/v1/logout"
@@ -57,6 +62,9 @@ def taskDetail(request, pk):
 
 @api_view(['POST'])
 def taskCreate(request):
+
+    request.data['user'] = request.user.id
+    print(request.data)
     serializer = TaskSerializer(data = request.data)
     if serializer.is_valid():
         serializer.save()
@@ -78,6 +86,37 @@ def taskDelete(request, pk):
     task.delete()
     return Response('Task successfull deleted')
 
+
+@api_view(['GET'])
+def projectList(request):
+    projects = Project.objects.all()
+    serializer = ProjectSerializer(projects, many=True)
+    print(projects)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def projectCreate(request):
+
+    request.data['user'] = request.user.id
+    print(request.data)
+    serializer = ProjectSerializer(data = request.data)
+    if serializer.is_valid():
+        serializer.save()
+    
+    return Response(serializer.data)
+
+# @api_view(['POST'])
+# def taskUpdate(request, pk):
+#     task = Task.objects.get(id = pk)
+#     serializer = TaskSerializer(instance = task, data=request.data)
+#     if serializer.is_valid():
+#         serializer.save()
+
+#     return Response(serializer.data)
+
+# @api_view(['DELETE'])
+# def taskDelete(request, pk):
 
 
 
@@ -125,14 +164,26 @@ def login_view(request):
 @api_view(['POST'])
 def logout_view(request):
     data = {}
-    data['response'] = "Logged Out"
-    Token.objects.get(user=request.user).delete()
+    
+    if(request.user.is_authenticated):
+        data['response'] = "Logged Out"
+        data['success'] = True
+        Token.objects.get(user=request.user).delete()
+    else:
+        data['success'] = False
     return JsonResponse(data)
 
 
 @api_view(['POST'])
 def check_view(request):
+
     data = {}
-    data['response'] = f"Current user is {request.user}"
+    if(request.user.is_authenticated):
+        data['response'] = f"Current user is {request.user}"
+        data['success'] = True
+        data['exists'] = request.user.id != None
+    else:
+        data['success'] = True
+    print(data)
     
     return JsonResponse(data)

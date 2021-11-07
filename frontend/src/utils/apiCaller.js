@@ -16,11 +16,27 @@ const apiCaller = (()=>
         .then((response)=>response.json())
         .then((data)=>data)
     }
-    const taskCall = (type, method, body)=>
+    const taskCall = (formName, body)=>
     {
-        
+        return fetch(`${apiURL}task-create`, {
+            method:"POST",
+            headers: headers,
+            body: JSON.stringify(body)
+        })
+        .then((response)=>response.json())
+        .then((data)=>{ console.log(data); return data;})
     }
-    return {authenticationCall}
+    const projectCall = (formName, body)=>
+    {
+        return fetch(`${apiURL}project-create`, {
+            method:"POST",
+            headers: headers,
+            body: JSON.stringify(body)
+        })
+        .then((response)=>response.json())
+        .then((data)=>{ console.log(data); return data;})
+    }
+    return {authenticationCall, taskCall, projectCall}
 })()
 
 export default apiCaller

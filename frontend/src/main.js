@@ -1,9 +1,13 @@
 import functionInterface from "./functionInterface"
 import "./styles/styles.scss"
 document.addEventListener('DOMContentLoaded', ()=>{
-   
-    functionInterface.authenticationForm('register')
-    functionInterface.authenticationForm('login')
-    functionInterface.authenticationForm('logout')
-    functionInterface.authenticationForm('check')
+
+    functionInterface.checkUserStatus()
+    //authenticationForm('formname', hasErrors)
+    functionInterface.authenticationForm('register', true)
+    functionInterface.authenticationForm('login', true)
+    // functionInterface.authenticationForm('logout', false)
+    // functionInterface.authenticationForm('check', false)
+    functionInterface.taskForm('task-create')
+    functionInterface.projectForm('project-create')
 })

@@ -37,11 +37,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
         user = User.objects.create_user(username=username, email=email)
         if password != confirm:
-            raise serializers.ValidationError({'password': 'Passwords must match'})
-       
-        user.set_password(password)
-        user.save()
-        return user
+            raise serializers.ValidationError({'confirm': ['Passwords must match']})
+            
+        else:
+            user.set_password(password)
+            user.save()
+            return user
 
 
 class LoginSerializer(serializers.ModelSerializer):
@@ -70,7 +71,7 @@ class LoginSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields =  '__all__'
+        fields =  ["title", "user"]
 
 class TaskSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source="User.username", read_only=True)

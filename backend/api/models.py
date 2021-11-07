@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
-from datetime import datetime
+from datetime import date
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
@@ -18,7 +18,7 @@ class Project(models.Model):
 class Task(models.Model):
     title = models.CharField(max_length=100)
     completed = models.BooleanField(default=False, blank=True)
-    pub_date = models.DateField(default=datetime.now())
+    pub_date = models.DateField(default=date.today)
     due_date = models.DateField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=CASCADE)
     project = models.ForeignKey(Project, on_delete=CASCADE, null=True, blank=True)

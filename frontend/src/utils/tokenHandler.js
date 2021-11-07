@@ -4,20 +4,20 @@ const tokenHandler = (()=>
     let headers = 
     {
         "Content-Type": "application/json",                                                                                            
-        // "Access-Control-Origin": "*",
-        // "Access-Control-Allow-Headers": "Accept"
     }
 
     const addHeaderToken = (token)=>
     {   
         if (token===undefined) return
-        headers["Authorization"]=`Token ${token}`
+        tokenHandler.headers["Authorization"]=`Token ${token}`
         window.localStorage.setItem('token', token)
+        window.localStorage.setItem('headers', headers)
         console.log(headers)
     }
     const deleteHeaderToken = ()=>
     {
-        delete headers["Authorization"]
+        console.log("DELETED")
+        delete tokenHandler.headers["Authorization"]
         window.localStorage.removeItem('token')
         console.log(headers)
     }
