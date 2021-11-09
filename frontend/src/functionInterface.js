@@ -3,17 +3,36 @@ import errorHandler from "./utils/errorHandler"
 import formHandler from "./utils/formHandler"
 import htmlHandler from "./utils/htmlHandler"
 import tokenHandler from "./utils/tokenHandler"
+import authenticationPage from "./components/authentication"
 
 const functionInterface = (()=>{
-    const checkUserStatus = ()=>{
+    const  returnUserStatus = ()=>{
         if(window.localStorage.getItem('token')!==null)
         {
             tokenHandler.addHeaderToken(window.localStorage.getItem('token'))
-            apiCaller.authenticationCall('check', {}).then(data=>console.log(data))
         }
+        else
+        {
+            tokenHandler.deleteHeaderToken()
+        }
+        return apiCaller.authenticationCall('check', {})
+        
     }
+
+    const checkUserStatus = ()=>{
+        returnUserStatus().then(data=>data.success)
+        .then(result=>console.log(result))
+    }
+
+
+
+
+
+
+
     const authenticationForm = (formName, hasErrors)=>{
         const form = document.querySelector(`#${formName}-form`)
+        console.log(form)
         let inputs = formHandler.getFormInputs(formName)
         if(hasErrors){errorHandler.addErrorEvents(inputs)}
         form.addEventListener('submit', (e)=>{
@@ -67,7 +86,7 @@ const functionInterface = (()=>{
             apiCaller.projectCall(formName, body)
         })
     }
-    return {authenticationForm, checkUserStatus, taskForm, projectForm}
+    return {authenticationForm, checkUserStatus, taskForm, projectForm, }
 })()
 
 export default functionInterface
