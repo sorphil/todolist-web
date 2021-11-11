@@ -6,7 +6,7 @@ import tokenHandler from "./utils/tokenHandler"
 import authenticationPage from "./components/authentication"
 
 const functionInterface = (()=>{
-    const  returnUserStatus = ()=>{
+    const returnUserStatus = ()=>{
         if(window.localStorage.getItem('token')!==null)
         {
             tokenHandler.addHeaderToken(window.localStorage.getItem('token'))
@@ -19,11 +19,19 @@ const functionInterface = (()=>{
         
     }
 
-    const checkUserStatus = ()=>{
-        returnUserStatus().then(data=>data.success)
-        .then(result=>console.log(result))
-    }
 
+    const startingPage = ()=>{
+        returnUserStatus().then(data=>{
+            if(data.success==true)
+            {
+                console.log("Open index")
+            }
+            else
+            {
+                console.log("Open authentication")
+            }
+        })
+    } 
 
 
 
@@ -86,7 +94,7 @@ const functionInterface = (()=>{
             apiCaller.projectCall(formName, body)
         })
     }
-    return {authenticationForm, checkUserStatus, taskForm, projectForm, }
+    return {authenticationForm, startingPage, taskForm, projectForm, }
 })()
 
 export default functionInterface

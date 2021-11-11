@@ -10,9 +10,9 @@
         <script src="./main.js"></script>
     </head>
     <body>
-        <div class = "form-container">
+        <div class = "form-container closed">
             <div class = "form-header">
-                <h1>Login To Your Account</h1>
+                <h1>SIGN IN TO YOUR ACCOUNT</h1>
             </div>
             <div class = "form-block">
                 <form id = "login-form" method = "post">
@@ -29,10 +29,22 @@
                     <div id = "login-button" class = "form-group">
                         <button id = "login-button-input" name = "submit" class = "form-button">Log In</button>
                     </div>
+                    <div id = "form-navs">
+                        <span id = "form-navs-text">Not registered?</span> <span id = "form-navs-link">Create an account</span>
+                    </div>
                 </form>
             </div>
         </div>
+     
         <div class = "form-container">
+               <h1>Logout</h1>
+            <form method = "post" id= "logout-form">
+                <input type = "submit" name = "submit" id = "logoutSubmit">
+            </form>
+        </div>
+       
+
+        <!-- <div class = "form-container">
             <div class = "form-header">
                <h1>Create An Account</h1>
             </div>
@@ -61,20 +73,17 @@
                     <div id = "register-button" class = "form-group">
                         <button id = "register-button-input" name = "submit" class = "form-button">Register</button>
                     </div>
-                    <!-- <div id = "form-navs" class = "form-group">
+                     <div id = "form-navs" class = "form-group">
                         <span id = "form-navs-text">Not registered?</span> <span id = "form-navs-link">Create an account</span>
-                    </div> -->
+                    </div> 
                 </form>
             </div>
         </div>
-        <!-- <h1>Logout</h1>
-        <form method = "post" id= "logout-form">
-            <input type = "submit" name = "submit" id = "logoutSubmit">
-        </form>
+
         <h1>Check</h1>
         <form method = "post" id= "check-form">
             <input type = "submit" name = "submit" id = "checkSubmit">
-        </form> -->
+        </form> 
         <div class = "form-container">
             <h1>Create Post</h1>
             <form method = "post" id= "task-create-form">
@@ -98,6 +107,6 @@
                 <input type = "submit" name = "submit" id = "postCreate">
             </form>
         </div>
-        
+         -->
     </body>
 </html>

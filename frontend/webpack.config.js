@@ -67,6 +67,7 @@ module.exports = {
       output: {
         filename: 'widget.[contenthash].js',
         // path: path.resolve(bundleOutputDir),
+        // clean: true,
       },
 
   // Default mode for Webpack is production.

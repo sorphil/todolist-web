@@ -181,9 +181,8 @@ def check_view(request):
     if(request.user.is_authenticated):
         data['response'] = f"Current user is {request.user}"
         data['success'] = True
-        data['exists'] = request.user.id != None
     else:
-        data['success'] = True
+        data['success'] = False
     print(data)
     
     return JsonResponse(data)

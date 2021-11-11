@@ -1,3 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap');
+
+$color-black: #1d1c22;
+$color-grey: #4d4c53;
+$color-white:#f8f8ff;
+$color-blue: #6a62d2;
+$color-dark-blue: #5c53d4;
+$color-red: #ff746d;
+
+
+@keyframes openContainer 
+{
+    0%
+    {
+        max-height:0px;
+    }
+    100%
+    {
+        max-height: 1000px;
+    }
+}
+
+@keyframes fadeIn 
+{
+    0%
+    {
+        opacity:0;
+    }    
+    100%
+    {
+        opacity: 1;
+    }
+}
+
+
+
 *
 {
     padding: 0;
@@ -9,38 +45,55 @@ body, html
 {
     min-width: 100vw;
     min-height: 100vh;
+    font-size: 10px;
+    background-color: $color-black;
     display: flex; 
     justify-content: space-around;
     align-items: center;
-    font-size: 10px;
-
 }
 
 .form-container
 {
+    &.closed 
+    {
+        height:0;
+        
+    }
+    &.open
+    {
+        animation: openContainer 500ms ;
+    }
+    
+    border-radius: 15px;
     width:40rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: $color-white;
     box-shadow: 0px -1px 45px -4px rgba(0,0,0,0.75);
+    >div {opacity: 0; &.open{animation: fadeIn 100ms;}}
+
 }
 
 .form-header
 {
-    padding: 3.5rem 0 3.5rem 0;
-    font-size: 1.8rem;
+    padding: 3.5rem 0 2.5rem 0;
+    margin-bottom:1.5rem;
+    font-size: 1.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     width:100%;
+    font-family: 'Rubik', sans-serif;
     font-weight: bold;
-    border-bottom: 2px solid black;
+    color: $color-black;
+    border-bottom: 2px solid $color-black;
 }
 
 
 .form-group
 {
-    padding: 2.5rem 0 2.5rem 0;
+    padding: 2rem 0 0rem 0;
     transition: all 300ms;
 }
 #form-navs
@@ -49,23 +102,32 @@ body, html
     align-items: center;
     justify-content: center;
     font-size:2rem;
+    padding:0 0 4rem 0;
     >span
     {
-        padding:0 1rem 0 1rem;
+        font-size:2rem;
+        padding: 0 1rem 0 1rem;
+        color: $color-black;
+
     }
     #form-navs-link
-    {
-        text-decoration: underline;
+    {    font-size:2rem;
+        color:$color-blue;
+        cursor: pointer;
+        &:hover
+        {
+            text-decoration: underline;
+        }
     }
 }
 
 .form-label
 {
-    font-size:2rem;
-    color:rgb(5, 61, 5);
+    font-size:2.1rem;
+    color: $color-black;
     display:block;
     opacity:1;
-    transform:translateY(-5.5rem);
+    transform:translateY(-4.5rem);
     transform-origin: 0 0;
     transition: all 300ms
 }
@@ -74,7 +136,7 @@ body, html
 {
     font-size: 2.5rem;
     height: 6rem;
-    // width:80rem;
+    width:100%;
     box-shadow: none;
     background-color: transparent;
     border-radius: 0;
@@ -91,50 +153,34 @@ body, html
 {
     box-shadow: none;
     outline:none;
-    border-color:rgb(5, 61, 5);
+    border-color:$color-black;
 }
 
 
 .form-input:focus + .form-label,
 .form-input:not(:placeholder-shown) +.form-label
 {
-    transform: translateY(-7.5rem) scale(0.6);
-}
-.form-input.error   
-{
-    border-color:red;
-    +.form-label
-    {
-        color:red;
-    }
-
-}
-.form-error
-{
-    color:red;
-    font-size:1.8rem;
-    transform: translateY(9rem);
-    opacity:0;
-
-    &.active{opacity: 1; transition: all 200ms;}
+    transform: translateY(-8rem) scale(0.8);
 }
 
 .form-button
 {
+    font-family: 'Rubik', sans-serif;
     box-sizing: border-box;
-    border-color: rgb(5, 61, 5);
-    padding:0.5rem;
+    color: $color-white;
+    // border-color: $color-black;
+    padding:1.5rem 0.5rem 1.5rem 0.5rem;
+    margin: 2rem 0 2rem 0;
     // padding: 0;
-    font-size: 2rem;
-    // width:30%;
+    font-size: 1.7rem;
     transition:all 300ms;
     cursor: pointer;
     transform-origin: left;
-    background-color: rgba(99, 165, 67, 0.7);
+    background-color: $color-black;
     width: 100%;
     &:active
     {
-        background-color: rgba(99, 165, 67, 1.5);
+        background-color: $color-grey;
     }
 }
 
