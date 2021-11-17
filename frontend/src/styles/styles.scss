@@ -56,7 +56,7 @@ body, html
 {
     &.closed 
     {
-        height:0;
+        // height:0;
         
     }
     &.open
@@ -71,7 +71,7 @@ body, html
     align-items: center;
     background-color: $color-white;
     box-shadow: 0px -1px 45px -4px rgba(0,0,0,0.75);
-    >div {opacity: 0; &.open{animation: fadeIn 100ms;}}
+    // >div {opacity: 0; &.open{animation: fadeIn 100ms;}}
 
 }
 
@@ -81,6 +81,7 @@ body, html
     margin-bottom:1.5rem;
     font-size: 1.2rem;
     display: flex;
+    color: $color-black;
     align-items: center;
     justify-content: center;
     width:100%;
@@ -91,12 +92,12 @@ body, html
 }
 
 
-.form-group
+.input-group
 {
     padding: 2rem 0 0rem 0;
     transition: all 300ms;
 }
-#form-navs
+.form-navs
 {
     display: flex;
     align-items: center;
@@ -110,7 +111,7 @@ body, html
         color: $color-black;
 
     }
-    #form-navs-link
+    .form-navs-link
     {    font-size:2rem;
         color:$color-blue;
         cursor: pointer;

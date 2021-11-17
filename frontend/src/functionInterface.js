@@ -16,7 +16,12 @@ const functionInterface = (()=>{
             tokenHandler.deleteHeaderToken()
         }
         return apiCaller.authenticationCall('check', {})
-        
+    }
+
+    const changePage = (pageName, parent)=>{
+        console.log("CHANGED", pageName)
+        htmlHandler.clearDIV(parent)
+        authenticationPage.generateAuthenticationForms(pageName, '')
     }
 
 
@@ -25,12 +30,17 @@ const functionInterface = (()=>{
             if(data.success==true)
             {
                 console.log("Open index")
+                authenticationPage.generateAuthenticationForms('login', '')
             }
             else
             {
-                console.log("Open authentication")
+                // {formName, formHeader}
+                authenticationPage.generateAuthenticationForms('login')
+                
             }
         })
+        // .then(()=>authenticationPage.addNavEvents('login'))
+        // .then(()=>initiateAnimations())
     } 
 
 
@@ -40,7 +50,6 @@ const functionInterface = (()=>{
 
     const authenticationForm = (formName, hasErrors)=>{
         const form = document.querySelector(`#${formName}-form`)
-        console.log(form)
         let inputs = formHandler.getFormInputs(formName)
         if(hasErrors){errorHandler.addErrorEvents(inputs)}
         form.addEventListener('submit', (e)=>{
@@ -74,7 +83,6 @@ const functionInterface = (()=>{
     const taskForm = (formName)=>
     {
         const form = document.querySelector(`#${formName}-form`)
-        let inputs = formHandler.getFormInputs(formName)
         form.addEventListener('submit', (e)=>{
             e.preventDefault()
             let body = formHandler.getFormValues(formName)
@@ -94,7 +102,7 @@ const functionInterface = (()=>{
             apiCaller.projectCall(formName, body)
         })
     }
-    return {authenticationForm, startingPage, taskForm, projectForm, }
+    return {authenticationForm, startingPage, taskForm, projectForm, changePage}
 })()
 
 export default functionInterface
