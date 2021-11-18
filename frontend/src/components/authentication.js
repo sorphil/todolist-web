@@ -1,5 +1,6 @@
 import functionInterface from "../functionInterface"
 import htmlHandler from "../utils/htmlHandler"
+import animationHandler from "../utils/animationHandler"
 
 const authenticationPage = (()=>{  
     const formHeaders = {'login':"SIGN IN TO YOUR ACCOUNT", "register":"CREATE AN ACCOUNT"} 
@@ -29,13 +30,13 @@ const authenticationPage = (()=>{
                     "id":`${formName}-button-input`,
                     "className":"form-button",
                     "name":"submit",
-                    "innerHTML":"Create An Account"
+                    "innerHTML":"Sign Up"
                 })
             }
         }
         const container = htmlHandler.generateHTMLForm(formName, formHeaders, inputs)
         
-        const navs = htmlHandler.generateHTMLElement('div', {"className":"form-navs", "innerHTML":formNavs[formName]})
+        const navs = htmlHandler.generateHTMLElement('div', {"className":"form-navs closed", "innerHTML":formNavs[formName]})
         container.appendChild(navs)
         document.querySelector('body').appendChild(container)
         addNavEvents(formName)
@@ -44,6 +45,8 @@ const authenticationPage = (()=>{
         const formLink = document.querySelector(`#${formName}-navs-link`)
         formLink.addEventListener('click', ()=>{
             functionInterface.changePage(formName=='register'?'login':'register', document.querySelector('body'))
+            animationHandler.openAnimations(document.querySelector('.form-container'))
+            functionInterface.authenticationForm(formName=='register'?'login':'register')
         })
     }
     return {generateAuthenticationForms, addNavEvents}

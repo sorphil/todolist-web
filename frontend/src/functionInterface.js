@@ -4,6 +4,7 @@ import formHandler from "./utils/formHandler"
 import htmlHandler from "./utils/htmlHandler"
 import tokenHandler from "./utils/tokenHandler"
 import authenticationPage from "./components/authentication"
+import animationHandler from "./utils/animationHandler"
 
 const functionInterface = (()=>{
     const returnUserStatus = ()=>{
@@ -35,12 +36,13 @@ const functionInterface = (()=>{
             else
             {
                 // {formName, formHeader}
-                authenticationPage.generateAuthenticationForms('login')
+                return authenticationPage.generateAuthenticationForms('login')
                 
             }
         })
-        // .then(()=>authenticationPage.addNavEvents('login'))
-        // .then(()=>initiateAnimations())
+        .then(()=>animationHandler.openAnimations(document.querySelector('.form-container')))
+        .then(()=>functionInterface.authenticationForm('login', true))
+        
     } 
 
 

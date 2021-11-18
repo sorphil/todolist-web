@@ -74,9 +74,22 @@ body, html {
           box-shadow: 0px -1px 45px -4px rgba(0, 0, 0, 0.75);
 }
 
+.form-container.closed {
+  height: 0;
+}
+
 .form-container.open {
   -webkit-animation: openContainer 500ms;
           animation: openContainer 500ms;
+}
+
+.form-container > div {
+  opacity: 0;
+}
+
+.form-container > div.open {
+  -webkit-animation: fadeIn 100ms;
+          animation: fadeIn 100ms;
 }
 
 .form-header {

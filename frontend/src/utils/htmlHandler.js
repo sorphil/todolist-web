@@ -59,10 +59,10 @@ const htmlHandler =(()=>
     }
 
     const generateHTMLForm = (formName, formHeaders, inputs)=>{
-        const formBlock = generateHTMLElement('div', {"className":"form-block"})
-        const container = generateHTMLElement('div', {"className":"form-container"})
+        const formBlock = generateHTMLElement('div', {"className":"form-block closed"})
+        const container = generateHTMLElement('div', {"className":"form-container closed"})
 
-        const header = generateHTMLElement('div', {"className":"form-header", "innerHTML":`<h1>${formHeaders[formName]}</h1>`})
+        const header = generateHTMLElement('div', {"className":"form-header closed", "innerHTML":`<h1>${formHeaders[formName]}</h1>`})
         let form = generateHTMLElement('form', {"id":`${formName}-form`})
         form = appendFormInputs(form, formName, inputs)
         formBlock.appendChild(form)
