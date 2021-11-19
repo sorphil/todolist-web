@@ -186,4 +186,11 @@ body, html
 }
 
 
-
+.form-error
+{
+    &.active{opacity: 1;}
+    opacity: 0;
+    font-size: 1.4rem;
+    color:$color-red;
+    transform: translateY(8rem);
+}

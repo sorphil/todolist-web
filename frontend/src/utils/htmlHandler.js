@@ -36,7 +36,7 @@ const htmlHandler =(()=>
         })
         if (hasErrors)
         {
-            const divError = generateHTMLElement('div', {"className":"form-error closed"})
+            const divError = generateHTMLElement('div', {"className":"form-error", "innerHTML":"Placeholder Error"})
             inputGroup.appendChild(divError)
         }
         const input = generateHTMLElement('input',{
@@ -59,10 +59,10 @@ const htmlHandler =(()=>
     }
 
     const generateHTMLForm = (formName, formHeaders, inputs)=>{
-        const formBlock = generateHTMLElement('div', {"className":"form-block closed"})
+        const formBlock = generateHTMLElement('div', {"className":"form-block"})
         const container = generateHTMLElement('div', {"className":"form-container closed"})
 
-        const header = generateHTMLElement('div', {"className":"form-header closed", "innerHTML":`<h1>${formHeaders[formName]}</h1>`})
+        const header = generateHTMLElement('div', {"className":"form-header", "innerHTML":`<h1>${formHeaders[formName]}</h1>`})
         let form = generateHTMLElement('form', {"id":`${formName}-form`})
         form = appendFormInputs(form, formName, inputs)
         formBlock.appendChild(form)

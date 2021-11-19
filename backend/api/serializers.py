@@ -57,7 +57,7 @@ class LoginSerializer(serializers.ModelSerializer):
         try:
             username = User.objects.get(email=email).username
         except User.DoesNotExist:
-            raise serializers.ValidationError({'username': 'No user of that email address exists'})
+            raise serializers.ValidationError({'email': 'No user of that email address exists',})
         
         user = authenticate(username = username, password = password)
         if user is not None:

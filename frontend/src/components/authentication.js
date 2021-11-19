@@ -36,20 +36,20 @@ const authenticationPage = (()=>{
         }
         const container = htmlHandler.generateHTMLForm(formName, formHeaders, inputs)
         
-        const navs = htmlHandler.generateHTMLElement('div', {"className":"form-navs closed", "innerHTML":formNavs[formName]})
+        const navs = htmlHandler.generateHTMLElement('div', {"className":"form-navs", "innerHTML":formNavs[formName]})
         container.appendChild(navs)
         document.querySelector('body').appendChild(container)
-        addNavEvents(formName)
+        _addNavEvents(formName)
     }
-    const addNavEvents = (formName)=>{
+    const _addNavEvents = (formName)=>{
         const formLink = document.querySelector(`#${formName}-navs-link`)
         formLink.addEventListener('click', ()=>{
             functionInterface.changePage(formName=='register'?'login':'register', document.querySelector('body'))
             animationHandler.openAnimations(document.querySelector('.form-container'))
-            functionInterface.authenticationForm(formName=='register'?'login':'register')
+            functionInterface.authenticationForm(formName=='register'?'login':'register', true)
         })
     }
-    return {generateAuthenticationForms, addNavEvents}
+    return {generateAuthenticationForms,}
 })()
 
 export default authenticationPage
