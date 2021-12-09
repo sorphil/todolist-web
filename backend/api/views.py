@@ -8,7 +8,7 @@ from rest_framework.serializers import Serializer
 from django.contrib.auth import authenticate, login, logout
 from .models import Task, Project
 from django.contrib.auth.models import AnonymousUser, User
-from .serializers import LoginSerializer, ProjectSerializer, RegistrationSerializer, LoginSerializer, TaskSerializer
+from .serializers import LoginSerializer, ProjectSerializer, RegistrationSerializer, LoginSerializer, TaskSerializer, UserSerializer
 from rest_framework.decorators import api_view
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated, IsAuthenticatedOrReadOnly, BasePermission, IsAdminUser, DjangoModelPermissions
 # Create your views here.
@@ -155,6 +155,7 @@ def login_view(request):
                 token = Token.objects.create(user=user)
             data['token'] = token.key
             data['success'] = True
+            data['user'] = user.email
         else:
             data = serializer.errors 
             data['success'] = False

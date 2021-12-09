@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap");
 @-webkit-keyframes openContainer {
   0% {
     max-height: 0px;
@@ -49,11 +50,17 @@ body, html {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  align-items: center;
 }
 
 .form-container {
@@ -223,5 +230,380 @@ body, html {
 
 .form-button:active {
   background-color: #4d4c53;
+}
+
+.form-error {
+  opacity: 0;
+  font-size: 1.4rem;
+  color: #ff746d;
+  -webkit-transform: translateY(8rem);
+          transform: translateY(8rem);
+}
+
+.form-error.active {
+  opacity: 1;
+}
+
+.header-container {
+  width: 180rem;
+  font-family: 'Rubik', sans-serif;
+  font-weight: bold;
+  color: #f8f8ff;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 0.5fr 0.1fr (1fr)[4];
+      grid-template-columns: 1fr 0.5fr 0.1fr repeat(4, 1fr);
+  -ms-grid-rows: (1fr)[1];
+      grid-template-rows: repeat(1, 1fr);
+  padding: 2.5rem 0 2.5rem 0;
+}
+
+.header-title {
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 5;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-area: 1 / 1 / 6 / 3;
+  text-align: center;
+  font-size: 7rem;
+}
+
+.header-block {
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 5;
+  -ms-grid-column: 4;
+  -ms-grid-column-span: 4;
+  grid-area: 1 / 4 / 6 / 8;
+  font-size: 3rem;
+  padding-right: 7rem;
+  width: 100%;
+  text-align: right;
+}
+
+.header-intro {
+  font-size: 3rem;
+}
+
+.header-logout-form {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.header-logout-form button {
+  font-family: 'Rubik', sans-serif;
+  font-size: 1.5rem;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: none;
+  cursor: pointer;
+  color: #f8f8ff;
+  background-color: #4d4c53;
+  font-size: 1.5rem;
+  padding: 0.8rem;
+  margin: 0.5rem;
+  width: 15rem;
+}
+
+.header-logout-form button:hover {
+  background-color: #3e3e42;
+  opacity: 80%;
+}
+
+.header-logout-form button:active {
+  background-color: #3e3e42;
+  opacity: 100%;
+}
+
+.-container {
+  -webkit-box-shadow: 0px -1px 45px -4px rgba(0, 0, 0, 0.75);
+          box-shadow: 0px -1px 45px -4px rgba(0, 0, 0, 0.75);
+  width: 170rem;
+  height: 78rem;
+  margin: 0 0 2rem 0;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 0.5fr 0.1fr (1fr)[4];
+      grid-template-columns: 1fr 0.5fr 0.1fr repeat(4, 1fr);
+  -ms-grid-rows: (1fr)[5];
+      grid-template-rows: repeat(5, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.index-button {
+  color: #f8f8ff;
+  outline: transparent;
+  opacity: 90%;
+  font-size: 1.8rem;
+  padding: 1.5rem;
+  font-weight: bold;
+  margin: 3rem 0 1.5rem 0;
+  width: 90%;
+  cursor: pointer;
+}
+
+#addProject {
+  background-color: #1d1c22;
+  margin: 1rem 0 1.5rem 0;
+  padding: 1.5rem;
+  cursor: pointer;
+}
+
+#addProject:hover {
+  opacity: 90%;
+  background-color: #070708;
+}
+
+#addProject:active {
+  opacity: 100%;
+  background-color: #070708;
+}
+
+#addTask {
+  background-color: #6a62d2;
+}
+
+#addTask:hover {
+  opacity: 90%;
+  background-color: #5c53d4;
+}
+
+#addTask:active {
+  opacity: 100%;
+  background-color: #5c53d4;
+}
+
+.project-container {
+  border-radius: 1.5rem;
+  font-family: 'Rubik', sans-serif;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #4d4c53;
+  color: #f8f8ff;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 5;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-area: 1 / 1 / 6 / 3;
+}
+
+.project-title {
+  width: 100%;
+  font-size: 3rem;
+  padding: 4rem 0 2rem 0;
+  text-align: center;
+}
+
+.project-list {
+  border-top: #7a7883 solid 0.15rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #f8f8ff #4d4c53;
+}
+
+.project-item {
+  font-family: 'Rubik', sans-serif;
+  width: 95%;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 2rem;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  background-color: inherit;
+  cursor: pointer;
+  color: #f8f8ff;
+  opacity: 60%;
+}
+
+.project-item:hover {
+  opacity: 60%;
+  background-color: #3e3e42;
+}
+
+.project-item:active {
+  opacity: 100%;
+  background-color: #3e3e42;
+}
+
+.task-container {
+  border-radius: 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  font-family: 'Rubik', sans-serif;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #f8f8ff;
+  padding-top: 1rem;
+  overflow: hidden;
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 5;
+  -ms-grid-column: 4;
+  -ms-grid-column-span: 4;
+  grid-area: 1 / 4 / 6 / 8;
+}
+
+.task-project-title {
+  text-align: center;
+  width: 100%;
+  border-bottom: #4d4c53 solid 0.1rem;
+}
+
+#task-project-main-title {
+  font-size: 4rem;
+}
+
+#task-project-sub-title {
+  font-size: 2.5rem;
+  width: 100%;
+  text-align: center;
+  padding: 1.5rem 0 1.5rem 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.task-list {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #4d4c53 #f8f8ff;
+  padding: 1rem 2rem 1rem 2rem;
+  border-radius: 1.5rem;
+  width: 100%;
+  height: 95%;
+  background-color: #f8f8ff;
+}
+
+.task-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 1.8rem 0 2rem 0;
+  font-size: 1.7rem;
+}
+
+.task-buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+}
+
+.task-edit {
+  width: 2.5rem;
+  cursor: pointer;
+  height: 2.5rem;
+  background-image: url(../assets/trans-edit.png);
+  background-size: contain;
+  opacity: 55%;
+}
+
+.task-edit:hover {
+  opacity: 80%;
+}
+
+.task-edit:active {
+  opacity: 100%;
+}
+
+.task-delete {
+  width: 2.5rem;
+  cursor: pointer;
+  height: 2.5rem;
+  background-image: url(../assets/trans-delete.png);
+  background-size: contain;
+  opacity: 55%;
+}
+
+.task-delete:hover {
+  opacity: 80%;
+}
+
+.task-delete:active {
+  opacity: 100%;
+}
+
+input[type=checkbox] {
+  opacity: 0;
+}
+
+input[type=checkbox] + label {
+  position: relative;
+  padding: 0.2rem 0 0 4.2rem;
+  font-size: 1.8rem;
+  cursor: pointer;
+  display: inline-block;
+  color: #1d1c22;
+}
+
+input[type=checkbox] + label::before {
+  content: "";
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 2.5rem;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  height: 2.5rem;
+  outline: 0.5rem solid #aaa;
+  background: white;
+}
+
+input[type=checkbox]:checked + label::before {
+  content: "";
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 2.5rem;
+  height: 2.5rem;
+  outline: 0.5rem solid #5B9279;
+  background: white;
+}
+
+input[type=checkbox]:checked + label::after {
+  content: "";
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-image: url(../assets/trans-check.png);
+  background-size: contain;
 }
 /*# sourceMappingURL=styles.css.map */

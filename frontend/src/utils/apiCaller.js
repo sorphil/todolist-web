@@ -14,9 +14,10 @@ const apiCaller = (()=>
             body: JSON.stringify(body)
         })
         .then((response)=>response.json())
-        .then((data)=>{console.log(data)
-            return data} 
-            )
+        .then((data)=>{
+            console.log(data)
+            return data
+        })
     }
     const taskCall = (formName, body)=>
     {

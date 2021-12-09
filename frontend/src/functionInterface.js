@@ -5,6 +5,7 @@ import htmlHandler from "./utils/htmlHandler"
 import tokenHandler from "./utils/tokenHandler"
 import authenticationPage from "./components/authentication"
 import animationHandler from "./utils/animationHandler"
+import indexPage from "./components/index"
 
 const functionInterface = (()=>{
     const returnUserStatus = ()=>{
@@ -27,25 +28,49 @@ const functionInterface = (()=>{
 
 
     const startingPage = ()=>{
+        
         returnUserStatus().then(data=>{
             if(data.success==true)
             {
                 console.log("Open index")
-                authenticationPage.generateAuthenticationForms('login', '')
+                window.localStorage.getItem('user')
+                indexPage.generateMainPage()
+                return data
             }
             else
             {
-                // {formName, formHeader}
-                return authenticationPage.generateAuthenticationForms('login')
-                
+                authenticationPage.generateAuthenticationForms('login')
+                return data
             }
         })
-        .then(()=>animationHandler.openAnimations(document.querySelector('.form-container')))
-        .then(()=>functionInterface.authenticationForm('login', true))
-        
+        .then((data)=>{
+            if (data.success==true)
+            {
+                animationHandler.openIndex(document.querySelector('.index-container'))
+                
+                return data
+            }
+            else
+            {
+                animationHandler.openForm(document.querySelector('.form-container'))
+                return data
+            }
+            
+        })
+        .then((data)=>{
+            if (data.success==true)
+            {
+                functionInterface.authenticationForm('logout', false)
+            }
+            else
+            {
+                functionInterface.authenticationForm('login', true)
+            }
+           
+        })
     } 
-
-
+    
+    
 
 
 
@@ -56,18 +81,30 @@ const functionInterface = (()=>{
         if(hasErrors){errorHandler.addErrorEvents(inputs)}
         form.addEventListener('submit', (e)=>{
             e.preventDefault()
-            let body = formHandler.getFormValues(formName)
+            let inputs
+            let body = {}
+            if(formName!="logout")
+            {
+                inputs = document.querySelector('input')
+                htmlHandler.removeInputError(inputs)
+                body = formHandler.getFormValues(formName)
+            }
+            
+           
             apiCaller.authenticationCall(formName, body)
             .then(data=>{
                 if (data.success)
                 {
-                    if(formName==='register'||formName==='login'||formName==='check' && data.success)
+                    if(formName==='register'||formName==='login'||formName==='check')
                     {
                         tokenHandler.addHeaderToken(data.token)
+                        window.localStorage.setItem('user', data.user)
+                        location.reload()
                     }
                     else
                     {
                         tokenHandler.deleteHeaderToken()
+                        location.reload()
                     }
                 }
                 else

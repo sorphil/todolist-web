@@ -2,6 +2,16 @@
 
 const htmlHandler =(()=>
 {
+    const appendChildrenNodes = (parentNode, childrenNodes)=>{
+        if(childrenNodes!=undefined)
+        {
+            for(let i = 0; i<childrenNodes.length; i++)
+            {
+                parentNode.appendChild(childrenNodes[i])
+            }
+        }
+        return parentNode
+    }
     const clearDIV = (parent)=>{
         parent.innerHTML = ""
     }
@@ -18,15 +28,13 @@ const htmlHandler =(()=>
     }
 
     const appendFormInputs = (form, formName, inputs)=>{
-        form.appendChild(inputs['email'])
-        form.appendChild(inputs['password'])
-        form.appendChild(inputs['button'])
+        let result = htmlHandler.appendChildrenNodes(form, [inputs['email'], inputs['password'], inputs['button']])
         if(formName=='register')
         {
-            form.insertBefore(inputs['username'], form.querySelector(`#${formName}-email`))
-            form.insertBefore(inputs['confirm'], form.querySelector(`button`))
+            result.insertBefore(inputs['username'], form.querySelector(`#${formName}-email`))
+            result.insertBefore(inputs['confirm'], form.querySelector(`button`))
         }
-        return form
+        return result
     }
 
     const generateHTMLInputGroup = (formName, inputName, inputType, hasErrors)=>{
@@ -88,7 +96,7 @@ const htmlHandler =(()=>
             formInput.previousElementSibling.classList.remove('active')
         }
     }
-    return {generateHTMLElement, generateHTMLInputGroup, generateHTMLForm, inputErrorMessage, removeInputError, clearDIV}
+    return {appendChildrenNodes,generateHTMLElement, generateHTMLInputGroup, generateHTMLForm, inputErrorMessage, removeInputError, clearDIV}
 })()
 
 export default htmlHandler

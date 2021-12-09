@@ -4,11 +4,11 @@ const errorHandler = (()=>
 {
     const getInputErrors = (data, formName)=>{
         let errors = {}
-        console.log(data)
         for (let input in data)
         {
+            let len = Object.getOwnPropertyNames(data).length
             if(input ==='success') break
-            let error =  data[input][0]
+            let error =  len>2?data[input][0]:data[input]
             let inputDIV = document.querySelector(`#${formName}-${input}-input`)
             let errorDIV = inputDIV.previousElementSibling
             errors[input] = {'inputDIV':inputDIV, 'errorDIV': errorDIV, 'message':error}

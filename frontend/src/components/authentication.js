@@ -6,7 +6,7 @@ const authenticationPage = (()=>{
     const formHeaders = {'login':"SIGN IN TO YOUR ACCOUNT", "register":"CREATE AN ACCOUNT"} 
     const formNavs = {
         'login':'<span id = "login-navs-text">Not registered?</span> <span id = "login-navs-link" class = "form-navs-link">Create an account</span>',
-        'register':'<span id = "register-navs-text">Already have an account?</span> <span Sign id = "register-navs-link" class = "form-navs-link">Sign in</span>',
+        'register':'<span id = "register-navs-text">Already have an account?</span> <span Sign id = "register-navs-link" class = "form-navs-link">Log in</span>',
         }
     const generateAuthenticationForms = (formName)=>{
         let inputs = {}
@@ -45,7 +45,7 @@ const authenticationPage = (()=>{
         const formLink = document.querySelector(`#${formName}-navs-link`)
         formLink.addEventListener('click', ()=>{
             functionInterface.changePage(formName=='register'?'login':'register', document.querySelector('body'))
-            animationHandler.openAnimations(document.querySelector('.form-container'))
+            animationHandler.openForm(document.querySelector('.form-container'))
             functionInterface.authenticationForm(formName=='register'?'login':'register', true)
         })
     }
