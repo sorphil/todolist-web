@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap');
-
 $color-black: #1d1c22;
 $color-grey: #4d4c53;
 $color-dark-grey: #3e3e42;
@@ -9,197 +7,13 @@ $color-dark-blue: #5c53d4;
 $color-green: #5B9279;
 $color-red: #ff746d;
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap');
-
-@keyframes openContainer 
-{
-    0%
-    {
-        max-height:0px;
-    }
-    100%
-    {
-        max-height: 1000px;
-    }
-}
-
-@keyframes fadeIn 
-{
-    0%
-    {
-        opacity:0;
-    }    
-    100%
-    {
-        opacity: 1;
-    }
-}
-
-
-
 *
 {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-}
-
-body, html
-{
-    min-width: 100vw;
-    min-height: 100vh;
-    font-size: 10px;
-    background-color: $color-black;
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    justify-content: center;
-    align-items: center;
-}
-
-.form-container
-{
-    &.closed 
-    {
-        height:0;
-        
-    }
-    &.open
-    {
-        animation: openContainer 500ms ;
-    }
-    
-    border-radius: 15px;
-    width:40rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: $color-white;
-    box-shadow: 0px -1px 45px -4px rgba(0,0,0,0.75);
-    >div {opacity: 0; &.open{animation: fadeIn 100ms;}}
-
-}
-
-.form-header
-{
-    padding: 3.5rem 0 2.5rem 0;
-    margin-bottom:1.5rem;
-    font-size: 1.2rem;
-    display: flex;
-    color: $color-black;
-    align-items: center;
-    justify-content: center;
-    width:100%;
     font-family: 'Rubik', sans-serif;
-    font-weight: bold;
-    color: $color-black;
-    border-bottom: 2px solid $color-black;
 }
-
-
-.input-group
-{
-    padding: 2rem 0 0rem 0;
-    transition: all 300ms;
-}
-.form-navs
-{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size:2rem;
-    padding:0 0 4rem 0;
-    >span
-    {
-        font-size:2rem;
-        padding: 0 1rem 0 1rem;
-        color: $color-black;
-
-    }
-    .form-navs-link
-    {    font-size:2rem;
-        color:$color-blue;
-        cursor: pointer;
-        &:hover
-        {
-            text-decoration: underline;
-        }
-    }
-}
-
-.form-label
-{
-    font-size:2.1rem;
-    color: $color-black;
-    display:block;
-    opacity:1;
-    transform:translateY(-4.5rem);
-    transform-origin: 0 0;
-    transition: all 300ms
-}
-
-.form-input
-{
-    font-size: 2.5rem;
-    height: 6rem;
-    width:100%;
-    box-shadow: none;
-    background-color: transparent;
-    border-radius: 0;
-    border-style: none none solid none;
-    transition: all 500ms;
-}
-
-.form-input::placeholder
-{
-    color:transparent;
-}
-
-.form-input:focus
-{
-    box-shadow: none;
-    outline:none;
-    border-color:$color-black;
-}
-
-
-.form-input:focus + .form-label,
-.form-input:not(:placeholder-shown) +.form-label
-{
-    transform: translateY(-8rem) scale(0.8);
-}
-
-.form-button
-{
-    font-family: 'Rubik', sans-serif;
-    box-sizing: border-box;
-    color: $color-white;
-    // border-color: $color-black;
-    padding:1.5rem 0.5rem 1.5rem 0.5rem;
-    margin: 2rem 0 2rem 0;
-    // padding: 0;
-    font-size: 1.7rem;
-    transition:all 300ms;
-    cursor: pointer;
-    transform-origin: left;
-    background-color: $color-black;
-    width: 100%;
-    &:active
-    {
-        background-color: $color-grey;
-    }
-}
-
-
-.form-error
-{
-    &.active{opacity: 1;}
-    opacity: 0;
-    font-size: 1.4rem;
-    color:$color-red;
-    transform: translateY(8rem);
-}
-
-
 
 body, html
 {
@@ -226,11 +40,6 @@ body, html
     grid-template-columns: 1fr 0.5fr 0.1fr repeat(4, 1fr);
     grid-template-rows: repeat(1, 1fr);
     padding: 2.5rem 0 2.5rem 0;
-    &.closed
-    {
-        opacity: 0;
-    }
-    &.open{animation: fadeIn 100ms;}
 }
 .header-title
 {
@@ -254,9 +63,7 @@ body, html
 {
     margin-top:1rem;
     width:100%;
-    
-}
-#logout-button-input
+    button
     {
         font-family: 'Rubik', sans-serif;
         font-size: 1.5rem;
@@ -280,6 +87,7 @@ body, html
             opacity: 100%;
         }
     }
+}
 
 
 
@@ -295,16 +103,6 @@ body, html
     grid-template-rows: repeat(5, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px;
-    
-    &.closed
-    {
-        height: 0;
-    }
-    &.open
-    {
-        animation: openContainer 500ms ;
-    }
-    >div {opacity: 0; &.open{animation: fadeIn 100ms;}}
 }
 
 
@@ -320,7 +118,6 @@ body, html
     margin: 3rem 0 1.5rem 0;
     width: 90%;
     cursor: pointer;
-    border: 0;
 }
 #addProject
 {
@@ -368,7 +165,7 @@ body, html
     color: $color-white;
     grid-area: 1 / 1 / 6 / 3; 
 }
-.project-title
+.project-header
 {
     width: 100%;;
     font-size: 3rem;
@@ -377,7 +174,7 @@ body, html
 }
 .project-list
 {
-    border-top: #7a7883 solid 0.15rem;
+    border-top: #7a7883 solid 0.3rem;
     margin-top:2rem;
     padding-top:1rem;
     height: 100%;
@@ -393,24 +190,48 @@ body, html
 {
     font-family: 'Rubik', sans-serif;
     width:95%; 
-    text-align: center;
+    // text-align: center;
+    display: flex;
+    justify-content: space-between;
     font-size: 1.5rem;
-    padding:2rem ;
+    padding:2.5rem 1.5rem 1.9rem 1.5rem ;
+    margin: 0.7rem 0 0.7rem 0;
     box-sizing: border-box; 
     background-color: inherit;
     cursor: pointer;
     color: $color-white;
     opacity: 60%;
+    border-radius: 10px;
+    // .project-title
+    // {
+        
+    // }
+    z-index: 1;
     &:hover
     {
-        opacity: 60%;
+        opacity: 80%;
         background-color: $color-dark-grey;
     }
-    &:active
+    &.active
     {
-        opacity: 100%;
-        background-color:  $color-dark-grey;
+        opacity:100%;
+        background-color: $color-dark-grey;
     }
+    
+    
+}
+.project-delete
+{
+
+    width: 2.5rem;
+    cursor: pointer;
+    height: 2.5rem;
+    background-image: url(../assets/trans-delete-grey.png);
+    background-size: contain;
+    opacity: 75%;
+    transition:all 0.1s;
+    &:hover{opacity: 80%;transform: scale(1.2);}
+    z-index: 3;
 }
 
 
@@ -427,17 +248,18 @@ body, html
     overflow: hidden;
     grid-area: 1 / 4 / 6 / 8; 
 }
-.task-project-title
+.task-header
 {
     text-align: center;
     width:100%;
-    border-bottom: $color-grey solid 0.1rem; 
+    height:18%;
+    border-bottom: $color-grey solid 0.3rem; 
 }
-#task-project-main-title
+#task-header-main
 {
     font-size: 4rem;
 }
-#task-project-sub-title
+#task-header-sub
 {
     font-size: 2.5rem;
     width: 100%;
@@ -447,6 +269,7 @@ body, html
 }
 .task-list
 {
+    height: 64%;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: $color-grey $color-white;
@@ -460,11 +283,20 @@ body, html
 {
     display: flex;
     justify-content: space-between;
-    padding: 1.8rem 0 2rem 0;
+    padding:1.5rem 2rem 1.5rem 2rem;
+    margin: 1.2rem 0 1.2rem 0;
     font-size: 1.7rem;
+    border: $color-grey solid 0.1rem ;
+    transition: all 0.1s;
+    border-radius: 10px;
+    &:hover
+    {
+        transform: scale(1.01);
+    }
 }
 .task-buttons
 {
+    margin-top: 0.5rem;
     display: flex;
     justify-content: space-evenly;
 }
@@ -476,6 +308,7 @@ body, html
     background-image: url(../assets/trans-edit.png);
     background-size: contain;
     opacity: 55%;
+    transition: all 0.1s;
     &:hover{opacity: 80%;}
     &:active{opacity: 100%;}
 }
@@ -487,6 +320,7 @@ body, html
     background-image: url(../assets/trans-delete.png);
     background-size: contain;
     opacity: 55%;
+    transition: all 0.1s;
     &:hover{opacity: 80%;}
     &:active{opacity: 100%;}
 }
@@ -498,7 +332,7 @@ input[type=checkbox]
 input[type=checkbox]+label
 {
     position: relative;
-    padding: 0.2rem 0 0 4.2rem;
+    padding: 1.3rem 0 0 4.2rem;
     font-size: 1.8rem;
     cursor: pointer;
     display: inline-block;
@@ -508,30 +342,30 @@ input[type=checkbox]+label::before
 {
     content: "";
     left: 0;
-    top:0;
+    top:1rem;
     position: absolute;
     width:2.5rem;
     transition: all 0.2s;
     height: 2.5rem;
     outline:0.5rem solid #aaa;
-    background: white;
+    background: $color-white;
 }
 input[type=checkbox]:checked +label::before
 {
     content: "";
     left: 0;
-    top:0;
+    top:1rem;
     position: absolute;
     width: 2.5rem;
     height: 2.5rem;
     outline: 0.5rem solid $color-green;
-    background: white;
+    background: $color-white;
 }
 input[type=checkbox]:checked +label::after
 {
     content: "";
     left: 0;
-    top:0;
+    top:1rem;
     position: absolute;
     width:2.5rem;
     height: 2.5rem;
@@ -539,3 +373,44 @@ input[type=checkbox]:checked +label::after
     background-size: contain;
 }
         
+.task-title-input
+{
+    padding: 0.8rem;
+    margin: 2.2rem 0 0 1.2rem;
+    border-radius: 5px;
+    font-size:1.7rem;
+    width: 80rem;
+    box-sizing: border-box;
+    border: 0.2rem solid $color-black;
+    background-color:$color-white;
+}
+
+.task-due-input
+{
+    padding: 0.8rem;
+    border-radius: 5px;
+    font-size:1.7rem;
+    border: 0.2rem solid $color-black;
+}
+
+.task-create-button
+{
+    font-size: 1.5rem;
+    padding:0.7rem;
+    margin-top: 0.5rem;
+    width:7.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+                
+.task-submit
+{
+    background-color: $color-green;
+    color: white;
+
+}
+.task-cancel
+{
+    background-color: $color-red;
+    color: $color-white;
+}

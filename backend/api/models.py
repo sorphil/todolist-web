@@ -11,7 +11,6 @@ from rest_framework.authtoken.models import Token
 
 class Project(models.Model):
     title = models.CharField(max_length=150)
-    description = models.CharField(max_length=150)
     user = models.ForeignKey(User, on_delete=CASCADE)
     def __str__(self):
         return f"{self.title} (Project) - {self.user}"

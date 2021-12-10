@@ -89,8 +89,6 @@ const functionInterface = (()=>{
                 htmlHandler.removeInputError(inputs)
                 body = formHandler.getFormValues(formName)
             }
-            
-           
             apiCaller.authenticationCall(formName, body)
             .then(data=>{
                 if (data.success)
@@ -130,18 +128,7 @@ const functionInterface = (()=>{
         })
     }
 
-    const projectForm = (formName)=>
-    {
-        const form = document.querySelector(`#${formName}-form`)
-        let inputs = formHandler.getFormInputs(formName)
-        form.addEventListener('submit', (e)=>{
-            e.preventDefault()
-            let body = formHandler.getFormValues(formName)
-            // console.log(body)
-            apiCaller.projectCall(formName, body)
-        })
-    }
-    return {authenticationForm, startingPage, taskForm, projectForm, changePage}
+    return {authenticationForm, startingPage, taskForm, changePage}
 })()
 
 export default functionInterface
