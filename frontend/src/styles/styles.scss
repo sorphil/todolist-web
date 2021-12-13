@@ -7,12 +7,36 @@ $color-dark-blue: #5c53d4;
 $color-green: #5B9279;
 $color-red: #ff746d;
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap');
+
+@keyframes openContainer 
+{
+    0%
+    {
+        max-height:0px;
+    }
+    100%
+    {
+        max-height: 1000px;
+    }
+}
+
+@keyframes fadeIn 
+{
+    0%
+    {
+        opacity:0;
+    }    
+    100%
+    {
+        opacity: 1;
+    }
+}
+  
 *
 {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: 'Rubik', sans-serif;
 }
 
 body, html
@@ -28,6 +52,153 @@ body, html
 
 }
 
+.form-container
+{
+    &.closed 
+    {
+        height:0;
+
+    }
+    &.open
+    {
+        animation: openContainer 500ms ;
+    }
+
+    border-radius: 15px;
+    width:40rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: $color-white;
+    box-shadow: 0px -1px 45px -4px rgba(0,0,0,0.75);
+    >div {opacity: 0; &.open{animation: fadeIn 100ms;}}
+
+}
+
+.form-header
+{
+    padding: 3.5rem 0 2.5rem 0;
+    margin-bottom:1.5rem;
+    font-size: 1.2rem;
+    display: flex;
+    color: $color-black;
+    align-items: center;
+    justify-content: center;
+    width:100%;
+    font-family: 'Rubik', sans-serif;
+    font-weight: bold;
+    color: $color-black;
+    border-bottom: 2px solid $color-black;
+}
+
+
+.input-group
+{
+    padding: 2rem 0 0rem 0;
+    transition: all 300ms;
+}
+.form-navs
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size:2rem;
+    padding:0 0 4rem 0;
+    >span
+    {
+        font-size:2rem;
+        padding: 0 1rem 0 1rem;
+        color: $color-black;
+
+    }
+    .form-navs-link
+    {    font-size:2rem;
+        color:$color-blue;
+        cursor: pointer;
+        &:hover
+        {
+            text-decoration: underline;
+        }
+    }
+}
+
+.form-label
+{
+    font-size:2.1rem;
+    color: $color-black;
+    display:block;
+    opacity:1;
+    transform:translateY(-4.5rem);
+    transform-origin: 0 0;
+    transition: all 300ms
+}
+
+.form-input
+{
+    font-size: 2.5rem;
+    height: 6rem;
+    width:100%;
+    box-shadow: none;
+    background-color: transparent;
+    border-radius: 0;
+    border-style: none none solid none;
+    transition: all 500ms;
+}
+
+.form-input::placeholder
+{
+    color:transparent;
+}
+
+.form-input:focus
+{
+    box-shadow: none;
+    outline:none;
+    border-color:$color-black;
+}
+
+
+.form-input:focus + .form-label,
+.form-input:not(:placeholder-shown) +.form-label
+{
+    transform: translateY(-8rem) scale(0.8);
+}
+
+.form-button
+{
+    font-family: 'Rubik', sans-serif;
+    box-sizing: border-box;
+    color: $color-white;
+    // border-color: $color-black;
+    padding:1.5rem 0.5rem 1.5rem 0.5rem;
+    margin: 2rem 0 2rem 0;
+    // padding: 0;
+    font-size: 1.7rem;
+    transition:all 300ms;
+    cursor: pointer;
+    transform-origin: left;
+    background-color: $color-black;
+    width: 100%;
+    &:active
+    {
+        background-color: $color-grey;
+    }
+}
+
+
+.form-error
+{
+    &.active{opacity: 1;}
+    opacity: 0;
+    font-size: 1.4rem;
+    color:$color-red;
+    transform: translateY(8rem);
+}
+
+
+
+
+
 
 
 .header-container
@@ -40,6 +211,10 @@ body, html
     grid-template-columns: 1fr 0.5fr 0.1fr repeat(4, 1fr);
     grid-template-rows: repeat(1, 1fr);
     padding: 2.5rem 0 2.5rem 0;
+    &.closed
+    {
+        opacity: 0;
+    }
 }
 .header-title
 {
@@ -59,7 +234,7 @@ body, html
 {
     font-size: 3rem;
 }      
-.logout-form 
+#logout-form 
 {
     margin-top:1rem;
     width:100%;
@@ -103,6 +278,15 @@ body, html
     grid-template-rows: repeat(5, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px;
+    &.closed
+    {
+        height: 0;
+    }
+    &.open
+    {
+        animation: openContainer 500ms ;
+    }
+    >div {opacity: 0; &.open{animation: fadeIn 100ms;}}
 }
 
 
@@ -289,6 +473,7 @@ body, html
     border: $color-grey solid 0.1rem ;
     transition: all 0.1s;
     border-radius: 10px;
+
     &:hover
     {
         transform: scale(1.01);
@@ -296,6 +481,7 @@ body, html
 }
 .task-buttons
 {
+    font-family: 'Rubik', sans-serif;
     margin-top: 0.5rem;
     display: flex;
     justify-content: space-evenly;
@@ -332,7 +518,7 @@ input[type=checkbox]
 input[type=checkbox]+label
 {
     position: relative;
-    padding: 1.3rem 0 0 4.2rem;
+    padding: 1rem 0 1rem 4.2rem;
     font-size: 1.8rem;
     cursor: pointer;
     display: inline-block;
@@ -373,34 +559,83 @@ input[type=checkbox]:checked +label::after
     background-size: contain;
 }
         
+.task-input
+{
+    background-color: transparent;
+    box-shadow: none;
+    transition: all 500ms;
+}
 .task-title-input
 {
     padding: 0.8rem;
-    margin: 2.2rem 0 0 1.2rem;
+    margin: 2.7rem 0 0 1.2rem;
     border-radius: 5px;
     font-size:1.7rem;
-    width: 80rem;
+    width: 75rem;
     box-sizing: border-box;
-    border: 0.2rem solid $color-black;
-    background-color:$color-white;
+    border: 0.2rem solid $color-grey;
 }
 
 .task-due-input
 {
+    background-color: transparent;
     padding: 0.8rem;
     border-radius: 5px;
     font-size:1.7rem;
     border: 0.2rem solid $color-black;
 }
+
+.task-input::placeholder
+{
+    color:transparent;
+}
+
+.task-input:focus
+{
+    box-shadow: none;
+    outline:none;
+    border-color:$color-black;
+}
+
+.task-input-label
+{
+    color:$color-black;
+}
+.task-title-label
+{
+    font-size:2.1rem;
+    display:block;
+    transform:translateY(-3.3rem);
+    padding-left:2.2rem;
+    transform-origin: 0 0;
+    opacity:70%;
+    transition: all 300ms
+}
+.task-due-label
+{
+    margin-right:1.2rem;
+}
+
+.task-input:focus + .task-input-label,
+.task-input:not(:placeholder-shown) +.task-input-label
+{
+    transform: translateY(-6.5rem) scale(0.8);
+    opacity: 100%;
+}
+
+        
+
 
 .task-create-button
 {
     font-size: 1.5rem;
     padding:0.7rem;
     margin-top: 0.5rem;
-    width:7.5rem;
+    width:9rem;
     border-radius: 5px;
+    font-family: 'Rubik', sans-serif;
     cursor: pointer;
+    border-radius: 5px;
 }
                 
 .task-submit
@@ -414,3 +649,6 @@ input[type=checkbox]:checked +label::after
     background-color: $color-red;
     color: $color-white;
 }
+
+
+

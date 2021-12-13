@@ -5,10 +5,10 @@ const apiCaller = (()=>
     let headers = tokenHandler.headers
     let apiURL = 'http://127.0.0.1:8000/todos/api/v1/'
 
-    const authenticationCall = (type, body)=>
+    const postCall = (prefix, type, body)=>
     {
         type = type.toLowerCase()
-        return fetch(`${apiURL}${type}`, {
+        return fetch(`${apiURL}${prefix}${type}`, {
             method:"POST",
             headers: headers,
             body: JSON.stringify(body)
@@ -19,12 +19,24 @@ const apiCaller = (()=>
             return data
         })
     }
-    const taskCall = (formName, body)=>
-    {
-        return fetch(`${apiURL}task-create`, {
-            method:"POST",
+
+    const getCall =  (prefix, type)=>{
+        return fetch(`${apiURL}${prefix}${type}`,{
+            method:"GET",
             headers: headers,
-            body: JSON.stringify(body)
+        })
+        .then((response)=>response.json())
+        .then((data)=>{
+            // console.log(data)
+            return data
+        })
+    }
+    const taskCall = (type, body, method)=>
+    {
+        return fetch(`${apiURL}task-${type}`, {
+            method:method,
+            headers: headers,
+            body: method=="GET"?{}:JSON.stringify(body)
         })
         .then((response)=>response.json())
         .then((data)=>{ console.log(data); return data;})
@@ -39,7 +51,7 @@ const apiCaller = (()=>
         .then((response)=>response.json())
         .then((data)=>{ console.log(data); return data;})
     }
-    return {authenticationCall, taskCall, projectCall}
+    return {postCall, getCall}
 })()
 
 export default apiCaller

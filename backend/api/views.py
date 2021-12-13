@@ -49,7 +49,7 @@ def apiOverview(request):
 
 @api_view(['GET'])
 def taskList(request):
-    tasks = Task.objects.all()
+    tasks = Task.objects.filter(user=request.user)
     serializer = TaskSerializer(tasks, many=True)
     print(tasks)
     return Response(serializer.data)
@@ -89,7 +89,7 @@ def taskDelete(request, pk):
 
 @api_view(['GET'])
 def projectList(request):
-    projects = Project.objects.all()
+    projects = Project.objects.filter(user = request.user)
     serializer = ProjectSerializer(projects, many=True)
     print(projects)
     return Response(serializer.data)
@@ -105,21 +105,6 @@ def projectCreate(request):
         serializer.save()
     
     return Response(serializer.data)
-
-# @api_view(['POST'])
-# def taskUpdate(request, pk):
-#     task = Task.objects.get(id = pk)
-#     serializer = TaskSerializer(instance = task, data=request.data)
-#     if serializer.is_valid():
-#         serializer.save()
-
-#     return Response(serializer.data)
-
-# @api_view(['DELETE'])
-# def taskDelete(request, pk):
-
-
-
 
 
 #Registration/Login/Logout

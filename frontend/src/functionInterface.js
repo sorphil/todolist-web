@@ -17,7 +17,7 @@ const functionInterface = (()=>{
         {
             tokenHandler.deleteHeaderToken()
         }
-        return apiCaller.authenticationCall('check', {})
+        return apiCaller.postCall('check', "", {})
     }
 
     const changePage = (pageName, parent)=>{
@@ -89,7 +89,7 @@ const functionInterface = (()=>{
                 htmlHandler.removeInputError(inputs)
                 body = formHandler.getFormValues(formName)
             }
-            apiCaller.authenticationCall(formName, body)
+            apiCaller.postCall(formName, "", body)
             .then(data=>{
                 if (data.success)
                 {

@@ -1,10 +1,44 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap");
+@-webkit-keyframes openContainer {
+  0% {
+    max-height: 0px;
+  }
+  100% {
+    max-height: 1000px;
+  }
+}
+@keyframes openContainer {
+  0% {
+    max-height: 0px;
+  }
+  100% {
+    max-height: 1000px;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 * {
   padding: 0;
   margin: 0;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  font-family: 'Rubik', sans-serif;
 }
 
 body, html {
@@ -27,6 +61,187 @@ body, html {
   font-size: 10px;
 }
 
+.form-container {
+  border-radius: 15px;
+  width: 40rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #f8f8ff;
+  -webkit-box-shadow: 0px -1px 45px -4px rgba(0, 0, 0, 0.75);
+          box-shadow: 0px -1px 45px -4px rgba(0, 0, 0, 0.75);
+}
+
+.form-container.closed {
+  height: 0;
+}
+
+.form-container.open {
+  -webkit-animation: openContainer 500ms;
+          animation: openContainer 500ms;
+}
+
+.form-container > div {
+  opacity: 0;
+}
+
+.form-container > div.open {
+  -webkit-animation: fadeIn 100ms;
+          animation: fadeIn 100ms;
+}
+
+.form-header {
+  padding: 3.5rem 0 2.5rem 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  color: #1d1c22;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  font-family: 'Rubik', sans-serif;
+  font-weight: bold;
+  color: #1d1c22;
+  border-bottom: 2px solid #1d1c22;
+}
+
+.input-group {
+  padding: 2rem 0 0rem 0;
+  -webkit-transition: all 300ms;
+  transition: all 300ms;
+}
+
+.form-navs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-size: 2rem;
+  padding: 0 0 4rem 0;
+}
+
+.form-navs > span {
+  font-size: 2rem;
+  padding: 0 1rem 0 1rem;
+  color: #1d1c22;
+}
+
+.form-navs .form-navs-link {
+  font-size: 2rem;
+  color: #6a62d2;
+  cursor: pointer;
+}
+
+.form-navs .form-navs-link:hover {
+  text-decoration: underline;
+}
+
+.form-label {
+  font-size: 2.1rem;
+  color: #1d1c22;
+  display: block;
+  opacity: 1;
+  -webkit-transform: translateY(-4.5rem);
+          transform: translateY(-4.5rem);
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  -webkit-transition: all 300ms;
+  transition: all 300ms;
+}
+
+.form-input {
+  font-size: 2.5rem;
+  height: 6rem;
+  width: 100%;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  background-color: transparent;
+  border-radius: 0;
+  border-style: none none solid none;
+  -webkit-transition: all 500ms;
+  transition: all 500ms;
+}
+
+.form-input::-webkit-input-placeholder {
+  color: transparent;
+}
+
+.form-input:-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-input::-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-input::placeholder {
+  color: transparent;
+}
+
+.form-input:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  outline: none;
+  border-color: #1d1c22;
+}
+
+.form-input:focus + .form-label,
+.form-input:not(:placeholder-shown) + .form-label {
+  -webkit-transform: translateY(-8rem) scale(0.8);
+          transform: translateY(-8rem) scale(0.8);
+}
+
+.form-button {
+  font-family: 'Rubik', sans-serif;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  color: #f8f8ff;
+  padding: 1.5rem 0.5rem 1.5rem 0.5rem;
+  margin: 2rem 0 2rem 0;
+  font-size: 1.7rem;
+  -webkit-transition: all 300ms;
+  transition: all 300ms;
+  cursor: pointer;
+  -webkit-transform-origin: left;
+          transform-origin: left;
+  background-color: #1d1c22;
+  width: 100%;
+}
+
+.form-button:active {
+  background-color: #4d4c53;
+}
+
+.form-error {
+  opacity: 0;
+  font-size: 1.4rem;
+  color: #ff746d;
+  -webkit-transform: translateY(8rem);
+          transform: translateY(8rem);
+}
+
+.form-error.active {
+  opacity: 1;
+}
+
 .header-container {
   width: 180rem;
   font-family: 'Rubik', sans-serif;
@@ -39,6 +254,10 @@ body, html {
   -ms-grid-rows: (1fr)[1];
       grid-template-rows: repeat(1, 1fr);
   padding: 2.5rem 0 2.5rem 0;
+}
+
+.header-container.closed {
+  opacity: 0;
 }
 
 .header-title {
@@ -67,12 +286,12 @@ body, html {
   font-size: 3rem;
 }
 
-.logout-form {
+#logout-form {
   margin-top: 1rem;
   width: 100%;
 }
 
-.logout-form button {
+#logout-form button {
   font-family: 'Rubik', sans-serif;
   font-size: 1.5rem;
   -webkit-box-sizing: border-box;
@@ -87,12 +306,12 @@ body, html {
   width: 15rem;
 }
 
-.logout-form button:hover {
+#logout-form button:hover {
   background-color: #3e3e42;
   opacity: 80%;
 }
 
-.logout-form button:active {
+#logout-form button:active {
   background-color: #3e3e42;
   opacity: 100%;
 }
@@ -111,6 +330,24 @@ body, html {
       grid-template-rows: repeat(5, 1fr);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
+}
+
+.index-container.closed {
+  height: 0;
+}
+
+.index-container.open {
+  -webkit-animation: openContainer 500ms;
+          animation: openContainer 500ms;
+}
+
+.index-container > div {
+  opacity: 0;
+}
+
+.index-container > div.open {
+  -webkit-animation: fadeIn 100ms;
+          animation: fadeIn 100ms;
 }
 
 .index-button {
@@ -338,6 +575,7 @@ body, html {
 }
 
 .task-buttons {
+  font-family: 'Rubik', sans-serif;
   margin-top: 0.5rem;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -391,7 +629,7 @@ input[type=checkbox] {
 
 input[type=checkbox] + label {
   position: relative;
-  padding: 1.3rem 0 0 4.2rem;
+  padding: 1rem 0 1rem 4.2rem;
   font-size: 1.8rem;
   cursor: pointer;
   display: inline-block;
@@ -433,32 +671,93 @@ input[type=checkbox]:checked + label::after {
   background-size: contain;
 }
 
+.task-input {
+  background-color: transparent;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  -webkit-transition: all 500ms;
+  transition: all 500ms;
+}
+
 .task-title-input {
   padding: 0.8rem;
-  margin: 2.2rem 0 0 1.2rem;
+  margin: 2.7rem 0 0 1.2rem;
   border-radius: 5px;
   font-size: 1.7rem;
-  width: 80rem;
+  width: 75rem;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  border: 0.2rem solid #1d1c22;
-  background-color: #f8f8ff;
+  border: 0.2rem solid #4d4c53;
 }
 
 .task-due-input {
+  background-color: transparent;
   padding: 0.8rem;
   border-radius: 5px;
   font-size: 1.7rem;
   border: 0.2rem solid #1d1c22;
+}
+
+.task-input::-webkit-input-placeholder {
+  color: transparent;
+}
+
+.task-input:-ms-input-placeholder {
+  color: transparent;
+}
+
+.task-input::-ms-input-placeholder {
+  color: transparent;
+}
+
+.task-input::placeholder {
+  color: transparent;
+}
+
+.task-input:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  outline: none;
+  border-color: #1d1c22;
+}
+
+.task-input-label {
+  color: #1d1c22;
+}
+
+.task-title-label {
+  font-size: 2.1rem;
+  display: block;
+  -webkit-transform: translateY(-3.3rem);
+          transform: translateY(-3.3rem);
+  padding-left: 2.2rem;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  opacity: 70%;
+  -webkit-transition: all 300ms;
+  transition: all 300ms;
+}
+
+.task-due-label {
+  margin-right: 1.2rem;
+}
+
+.task-input:focus + .task-input-label,
+.task-input:not(:placeholder-shown) + .task-input-label {
+  -webkit-transform: translateY(-6.5rem) scale(0.8);
+          transform: translateY(-6.5rem) scale(0.8);
+  opacity: 100%;
 }
 
 .task-create-button {
   font-size: 1.5rem;
   padding: 0.7rem;
   margin-top: 0.5rem;
-  width: 7.5rem;
+  width: 9rem;
   border-radius: 5px;
+  font-family: 'Rubik', sans-serif;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 .task-submit {

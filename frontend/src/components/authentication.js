@@ -6,7 +6,7 @@ const authenticationPage = (()=>{
     const formHeaders = {'login':"SIGN IN TO YOUR ACCOUNT", "register":"CREATE AN ACCOUNT"} 
     const formNavs = {
         'login':'<span id = "login-navs-text">Not registered?</span> <span id = "login-navs-link" class = "form-navs-link">Create an account</span>',
-        'register':'<span id = "register-navs-text">Already have an account?</span> <span Sign id = "register-navs-link" class = "form-navs-link">Log in</span>',
+        'register':'<span id = "register-navs-text">Already have an account?</span> <span id = "register-navs-link" class = "form-navs-link">Log in</span>',
         }
     const generateAuthenticationForms = (formName)=>{
         let inputs = {}

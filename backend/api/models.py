@@ -12,6 +12,7 @@ from rest_framework.authtoken.models import Token
 class Project(models.Model):
     title = models.CharField(max_length=150)
     user = models.ForeignKey(User, on_delete=CASCADE)
+    description = models.CharField(max_length=150)
     def __str__(self):
         return f"{self.title} (Project) - {self.user}"
 
@@ -21,7 +22,7 @@ class Task(models.Model):
     pub_date = models.DateField(default=date.today)
     due_date = models.DateField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=CASCADE)
-    project = models.ForeignKey(Project, on_delete=CASCADE, null=True, blank=True)
+    project = models.ForeignKey(Project, on_delete=CASCADE)
     def __str__(self):
         return f"{self.title} (Task) - {self.user}"
 
