@@ -71,10 +71,6 @@ const functionInterface = (()=>{
     } 
     
     
-
-
-
-
     const authenticationForm = (formName, hasErrors)=>{
         const form = document.querySelector(`#${formName}-form`)
         let inputs = formHandler.getFormInputs(formName)
@@ -117,14 +113,14 @@ const functionInterface = (()=>{
             
         })
     }
-    const taskForm = (formName)=>
+    const taskForm = (type)=>
     {
-        const form = document.querySelector(`#${formName}-form`)
+        const form = document.querySelector(`#task-form`)
         form.addEventListener('submit', (e)=>{
             e.preventDefault()
-            let body = formHandler.getFormValues(formName)
+            let body = formHandler.getFormValues("task", type)
             // console.log(body)
-            apiCaller.taskCall(formName, body)
+            apiCaller.postCall(formName, body)
         })
     }
 

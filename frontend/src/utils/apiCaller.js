@@ -7,6 +7,7 @@ const apiCaller = (()=>
 
     const postCall = (prefix, type, body)=>
     {
+        console.log(body)
         type = type.toLowerCase()
         return fetch(`${apiURL}${prefix}${type}`, {
             method:"POST",

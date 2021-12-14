@@ -1,3 +1,4 @@
+import functionInterface from "../functionInterface"
 import apiCaller from "../utils/apiCaller"
 import dataHandler from "../utils/dataHandler"
 import htmlHandler from "../utils/htmlHandler"
@@ -10,15 +11,16 @@ const indexPage =  (()=>{
             if(type=="form")
             {
                 const taskTitleInput = htmlHandler.generateHTMLElement('input', {
-                    "className":"task-title-input task-input",
+                    "className":"task-input",
                     "type":"text",
-                    "id":"title-input",
+                    "id":"task-title-input",
                     "placeholder":"Task:"
                 })
                 const taskTitleLabel = htmlHandler.generateHTMLElement('label', {
                     "className":"task-input-label task-title-label",
                     "innerHTML":"Task:",
-                    "htmlFor":"title-input"})
+                    "htmlFor":"task-title-input"
+                })
                 results = htmlHandler.appendChildrenNodes(taskLeft, [taskTitleInput, taskTitleLabel])
             }
             else
@@ -31,7 +33,7 @@ const indexPage =  (()=>{
                 taskLeft.appendChild(taskCheck)
                 results = htmlHandler.appendChildrenNodes(taskLeft, [taskCheck])
             }
-            return taskLeft
+            return results
         }
         const _generateTaskRight = (type)=>{
             let results;
@@ -41,10 +43,10 @@ const indexPage =  (()=>{
             {
                 const dueDateLabel = htmlHandler.generateHTMLElement("label", {
                     "className":"task-input-label task-due-label",
-                    "htmlFor":"due-input",
+                    "htmlFor":"task-due-input",
                     "innerHTML":"Due:"
                 })
-                const dueDate = htmlHandler.generateHTMLElement('input', {"className":"task-due-input", "type":"date", "id":"due-input"})
+                const dueDate = htmlHandler.generateHTMLElement('input', {"className":"task-input", "type":"date", "id":"task-due-input"})
                 const submitBtn = htmlHandler.generateHTMLElement('button', {"className":"task-create-button task-submit", "innerHTML":"Submit"})
                 const cancelBtn = htmlHandler.generateHTMLElement('button', {"className":"task-create-button task-cancel", "innerHTML":"Cancel"})
                 
@@ -53,7 +55,8 @@ const indexPage =  (()=>{
             }
             else
             {
-                const taskDue = htmlHandler.generateHTMLElement('div', {"className":"task-due"})
+                console.log(props)
+                const taskDue = htmlHandler.generateHTMLElement('div', {"className":"task-due", "innerHTML":`Due: <i> ${props.due_date}</i>`})
                 const taskEdit = htmlHandler.generateHTMLElement('div', {"className":"task-edit"})
                 const taskDelete = htmlHandler.generateHTMLElement('div', {"className":"task-delete"})
 
@@ -62,18 +65,64 @@ const indexPage =  (()=>{
             }
             return results
         }
-        const taskItem = htmlHandler.generateHTMLElement('div', {"className":(type=="form")?"task-form task-item":"task-item"})
+        const taskItem = htmlHandler.generateHTMLElement((type=="form")?"form":"a", (type=="form")?
+            {"className":"task-item", "id":"task-form",}:
+            {"className": "task-item", "href":"javascript:void(0)"})
         const taskLeft = _generateTaskLeft(type)
         const taskRight = _generateTaskRight(type)
         taskItem.appendChild(taskLeft)
         taskItem.appendChild(taskRight)
         return taskItem
     }
-    const _generateProjectItem = (props)=>{
-        const projectItem = htmlHandler.generateHTMLElement('div', {"className":"project-item"})
-        const projectTitle = htmlHandler.generateHTMLElement('div', {"className":"project-title", "innerHTML":props.title})
-        const projectDeleteBtn = htmlHandler.generateHTMLElement('div',{"className":"project-delete"})
-        let results = htmlHandler.appendChildrenNodes(projectItem, [projectTitle, projectDeleteBtn])
+    const _generateProjectItem = (type, props)=>{
+        let results;
+        if(type=="form")
+        {
+            const projectForm = htmlHandler.generateHTMLElement('form', {"className":"project-form"})
+            const projectTitleInput = htmlHandler.generateHTMLElement('input', {
+                "className":"project-input",
+                "type":"text",
+                "id":"project-title-input",
+                "placeholder":"Project:"
+            })
+            const projectTitleLabel = htmlHandler.generateHTMLElement('label', {
+                "className":"project-input-label project-title-label",
+                "innerHTML":"Project: ",
+                "htmlFor":"project-title-input"
+            })
+            const projectDescriptionInput = htmlHandler.generateHTMLElement('textarea', {
+                "className":"project-input",
+                "rows":"3",
+                "cols":"41",
+                "maxLength":"150",
+                "id":"project-description-input",
+                "placeholder":"Description:"
+            })
+            const projectDescriptionLabel = htmlHandler.generateHTMLElement('label', {
+                "className":"project-input-label project-description-label",
+                "innerHTML":"Description: ",
+                "htmlFor":"project-description-input"
+            })
+            const projectButtons = htmlHandler.generateHTMLElement('div', {"className":"project-buttons"})
+            const projectSubmit =htmlHandler.generateHTMLElement('button', {
+                "className":"project-create-button project-submit",
+                "innerHTML":"Submit"
+            })
+            const projectCancel =htmlHandler.generateHTMLElement('button', {
+                "className":"project-create-button project-cancel",
+                "innerHTML":"Cancel"
+            })
+            let buttons = htmlHandler.appendChildrenNodes(projectButtons, [projectSubmit, projectCancel])
+            results = htmlHandler.appendChildrenNodes(projectForm, [projectTitleInput, projectTitleLabel, projectDescriptionInput, projectDescriptionLabel, buttons])
+        }
+        else
+        {
+            const projectItem = htmlHandler.generateHTMLElement('div', {"className":"project-item"})
+            const projectTitle = htmlHandler.generateHTMLElement('div', {"className":"project-title", "innerHTML":props.title})
+            const projectDeleteBtn = htmlHandler.generateHTMLElement('div',{"className":"project-delete"})
+            results = htmlHandler.appendChildrenNodes(projectItem, [projectTitle, projectDeleteBtn])
+        }        
+
         return results
 
     }
@@ -148,7 +197,7 @@ const indexPage =  (()=>{
             document.querySelector('#task-header-sub').innerHTML = data[0].description
             for (let i = 0; i<data.length;i++)
             {
-                let projectItem = _generateProjectItem(data[i])
+                let projectItem = _generateProjectItem("item",data[i])
                 if(i==0)
                 {
                     projectItem.classList.add('active')
@@ -171,6 +220,7 @@ const indexPage =  (()=>{
         document.querySelector('body').appendChild(header)
         document.querySelector('body').appendChild(indexContainer)
         addBtnEvents.addTaskBtnEvent()
+        addBtnEvents.addProjectBtnEvent()
         
     }
 
@@ -186,6 +236,7 @@ const indexPage =  (()=>{
                 this.style.cursor = "default"
                 this.disabled = true
                 addBtnEvents.cancelTaskBtnEvent()
+                addBtnEvents.submitTaskBtnEvent()
               
             })
         }
@@ -193,13 +244,45 @@ const indexPage =  (()=>{
             const cancelBtn = document.querySelector('.task-cancel')
             console.log(cancelBtn)
             cancelBtn.addEventListener('click', function(){
-                document.querySelector('.task-form').remove()
+                document.querySelector('#task-form').remove()
                 document.querySelector('#addTask').style.opacity = "1"
                 document.querySelector('#addTask').style.cursor = "pointer"
                 document.querySelector('#addTask').disabled = false
             })
         }
-        return {addTaskBtnEvent, cancelTaskBtnEvent}
+        const submitTaskBtnEvent = ()=>{
+            const submitBtn = document.querySelector('.task-submit')
+            submitBtn.addEventListener('click', (e)=>{
+                e.preventDefault()
+                apiCaller.postCall('task-','create','')
+            })
+            
+        }
+        const addProjectBtnEvent = ()=>{
+            const addProject = document.querySelector('#addProject')
+            console.log
+            addProject.addEventListener('click', function(){
+                const projectForm = _generateProjectItem("form")
+                document.querySelector('.project-list').appendChild(projectForm)
+                this.style.opacity = "0"
+                this.style.cursor = "default"
+                this.disabled = true
+                addBtnEvents.cancelProjectBtnEvent()
+              
+            })
+        }
+        const cancelProjectBtnEvent = ()=>{
+            const cancelBtn = document.querySelector('.project-cancel')
+            console.log(cancelBtn)
+            cancelBtn.addEventListener('click', function(e){
+                e.preventDefault()
+                document.querySelector('.project-form').remove()
+                document.querySelector('#addProject').style.opacity = "1"
+                document.querySelector('#addProject').style.cursor = "pointer"
+                document.querySelector('#addProject').disabled = false
+            })
+        }
+        return {addTaskBtnEvent, cancelTaskBtnEvent, addProjectBtnEvent, cancelProjectBtnEvent, submitTaskBtnEvent}
     })()
     return {generateMainPage}
 })()

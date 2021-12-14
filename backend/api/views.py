@@ -62,11 +62,11 @@ def taskDetail(request, pk):
 
 @api_view(['POST'])
 def taskCreate(request):
-
-    request.data['user'] = request.user.id
-    print(request.data)
     serializer = TaskSerializer(data = request.data)
+
     if serializer.is_valid():
+        print(serializer.data)
+        serializer.data['user'] = request.user.id
         serializer.save()
     
     return Response(serializer.data)
