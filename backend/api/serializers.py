@@ -71,7 +71,7 @@ class LoginSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields =  ["title", "user", "description"]
+        fields =  ["title", "user", "description", "pk"]
 
 class TaskSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source="User.username", read_only=True)

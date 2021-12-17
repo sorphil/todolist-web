@@ -113,14 +113,15 @@ const functionInterface = (()=>{
             
         })
     }
-    const taskForm = (type)=>
+    const taskForm = (type, projectID)=>
     {
         const form = document.querySelector(`#task-form`)
         form.addEventListener('submit', (e)=>{
             e.preventDefault()
-            let body = formHandler.getFormValues("task", type)
-            // console.log(body)
-            apiCaller.postCall(formName, body)
+            let body = formHandler.getFormValues("task")
+            body["project"] = projectID
+            body["pub_date"] = new Date().toISOString().split('T')[0]
+            apiCaller.postCall("task-", type, body)
         })
     }
 

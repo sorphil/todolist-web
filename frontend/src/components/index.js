@@ -14,7 +14,8 @@ const indexPage =  (()=>{
                     "className":"task-input",
                     "type":"text",
                     "id":"task-title-input",
-                    "placeholder":"Task:"
+                    "placeholder":"Task:",
+                    "name":"title"
                 })
                 const taskTitleLabel = htmlHandler.generateHTMLElement('label', {
                     "className":"task-input-label task-title-label",
@@ -46,7 +47,7 @@ const indexPage =  (()=>{
                     "htmlFor":"task-due-input",
                     "innerHTML":"Due:"
                 })
-                const dueDate = htmlHandler.generateHTMLElement('input', {"className":"task-input", "type":"date", "id":"task-due-input"})
+                const dueDate = htmlHandler.generateHTMLElement('input', {"className":"task-input", "type":"date", "id":"task-due-input", "name":"due_date"})
                 const submitBtn = htmlHandler.generateHTMLElement('button', {"className":"task-create-button task-submit", "innerHTML":"Submit"})
                 const cancelBtn = htmlHandler.generateHTMLElement('button', {"className":"task-create-button task-cancel", "innerHTML":"Cancel"})
                 
@@ -83,7 +84,8 @@ const indexPage =  (()=>{
                 "className":"project-input",
                 "type":"text",
                 "id":"project-title-input",
-                "placeholder":"Project:"
+                "placeholder":"Project:",
+                'name':"title"
             })
             const projectTitleLabel = htmlHandler.generateHTMLElement('label', {
                 "className":"project-input-label project-title-label",
@@ -117,7 +119,7 @@ const indexPage =  (()=>{
         }
         else
         {
-            const projectItem = htmlHandler.generateHTMLElement('div', {"className":"project-item"})
+            const projectItem = htmlHandler.generateHTMLElement('div', {"className":"project-item", "id":`project-${props.pk}`})
             const projectTitle = htmlHandler.generateHTMLElement('div', {"className":"project-title", "innerHTML":props.title})
             const projectDeleteBtn = htmlHandler.generateHTMLElement('div',{"className":"project-delete"})
             results = htmlHandler.appendChildrenNodes(projectItem, [projectTitle, projectDeleteBtn])
@@ -236,7 +238,9 @@ const indexPage =  (()=>{
                 this.style.cursor = "default"
                 this.disabled = true
                 addBtnEvents.cancelTaskBtnEvent()
-                addBtnEvents.submitTaskBtnEvent()
+                let id = document.querySelector('.active').id.charAt(document.querySelector('.active').id.length-1)
+                console.log(id)
+                functionInterface.taskForm('create', id )
               
             })
         }
@@ -251,11 +255,11 @@ const indexPage =  (()=>{
             })
         }
         const submitTaskBtnEvent = ()=>{
-            const submitBtn = document.querySelector('.task-submit')
-            submitBtn.addEventListener('click', (e)=>{
-                e.preventDefault()
-                apiCaller.postCall('task-','create','')
-            })
+            // const submitBtn = document.querySelector('.task-submit')
+            // submitBtn.addEventListener('click', (e)=>{
+            //     e.preventDefault()
+            //     apiCaller.postCall('task-','create','')
+            // })
             
         }
         const addProjectBtnEvent = ()=>{
