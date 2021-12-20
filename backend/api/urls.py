@@ -12,7 +12,7 @@ urlpatterns = [
     path('project-create',projectCreate),
     # path('task-update/<str:pk>',taskUpdate),
     # path('task-detail/<str:pk>',taskDetail),
-    # path('task-delete/<str:pk>',taskDelete),
+    path('task-delete/<str:pk>',taskDelete),
     path('register', registration_view, name="register"),
     path('login', login_view, name = "login" ),
     path('logout', logout_view, name = "logout"),

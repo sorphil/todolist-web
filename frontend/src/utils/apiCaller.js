@@ -7,7 +7,6 @@ const apiCaller = (()=>
 
     const postCall = (prefix, type, body)=>
     {
-        console.log(body)
         type = type.toLowerCase()
         return fetch(`${apiURL}${prefix}${type}`, {
             method:"POST",
@@ -16,7 +15,6 @@ const apiCaller = (()=>
         })
         .then((response)=>response.json())
         .then((data)=>{
-            console.log(data)
             return data
         })
     }
@@ -32,27 +30,21 @@ const apiCaller = (()=>
             return data
         })
     }
-    const taskCall = (type, body, method)=>
-    {
-        return fetch(`${apiURL}task-${type}`, {
-            method:method,
+
+    const deleteCall = (prefix, type, id)=>{
+        console.log("ID", id)
+        return fetch(`${apiURL}${prefix}${type}/${id}`,{
+            method:"DELETE",
             headers: headers,
-            body: method=="GET"?{}:JSON.stringify(body)
         })
         .then((response)=>response.json())
-        .then((data)=>{ console.log(data); return data;})
-    }
-    const projectCall = (formName, body)=>
-    {
-        return fetch(`${apiURL}project-create`, {
-            method:"POST",
-            headers: headers,
-            body: JSON.stringify(body)
+        .then((data)=>{
+            console.log(data)
+            return data
         })
-        .then((response)=>response.json())
-        .then((data)=>{ console.log(data); return data;})
     }
-    return {postCall, getCall}
+    
+    return {postCall, getCall, deleteCall}
 })()
 
 export default apiCaller

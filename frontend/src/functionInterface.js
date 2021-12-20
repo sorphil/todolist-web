@@ -113,16 +113,30 @@ const functionInterface = (()=>{
             
         })
     }
-    const taskForm = (type, projectID)=>
+    const taskForm = (type, method, taskID, projectID)=>
     {
-        const form = document.querySelector(`#task-form`)
-        form.addEventListener('submit', (e)=>{
-            e.preventDefault()
-            let body = formHandler.getFormValues("task")
-            body["project"] = projectID
-            body["pub_date"] = new Date().toISOString().split('T')[0]
-            apiCaller.postCall("task-", type, body)
-        })
+        if (method=="POST")
+        {
+            const form = document.querySelector(`#task-form`)
+            form.addEventListener('submit', (e)=>{
+                e.preventDefault()
+                let body = formHandler.getFormValues("task")
+                body["project"] = projectID
+                body["pub_date"] = new Date().toISOString().split('T')[0]
+                apiCaller.postCall("task-", type, body)
+                .then(data=>{
+                    let taskItem = indexPage._generateTaskItem("item", data)
+                    document.querySelector('.task-list').appendChild(taskItem)
+                })
+            })
+        }
+        else if(method=="DELETE")
+        {
+            apiCaller.deleteCall('task-',"delete", taskID)
+            .then((data)=>{
+                console.log(data)
+            })
+        }
     }
 
     return {authenticationForm, startingPage, taskForm, changePage}
