@@ -4,8 +4,8 @@ import dataHandler from "../utils/dataHandler"
 import htmlHandler from "../utils/htmlHandler"
 
 const indexPage =  (()=>{
-    const _generateTaskItem = (type, props)=>{
-        const _generateTaskLeft = (type)=>{
+    const generateTaskItem = (type, props, edit)=>{
+        const _generateTaskLeft = (type, props, edit)=>{
             const taskLeft = htmlHandler.generateHTMLElement('div', {"className":"task-left"})
             let results
             if(type=="form")
@@ -15,8 +15,11 @@ const indexPage =  (()=>{
                     "type":"text",
                     "id":"task-title-input",
                     "placeholder":"Task:",
-                    "name":"title"
+                    "name":"title",
+                    'required': 'true',
+                    "value": `${(edit==true)?props.title:""}`
                 })
+
                 const taskTitleLabel = htmlHandler.generateHTMLElement('label', {
                     "className":"task-input-label task-title-label",
                     "innerHTML":"Task:",
@@ -36,7 +39,7 @@ const indexPage =  (()=>{
             }
             return results
         }
-        const _generateTaskRight = (type)=>{
+        const _generateTaskRight = (type, props, edit)=>{
             let results;
             const taskRight = htmlHandler.generateHTMLElement('div', {"className":"task-right"})
             const taskButtons =htmlHandler.generateHTMLElement('div', {"className":"task-buttons"})
@@ -47,7 +50,14 @@ const indexPage =  (()=>{
                     "htmlFor":"task-due-input",
                     "innerHTML":"Due:"
                 })
-                const dueDate = htmlHandler.generateHTMLElement('input', {"className":"task-input", "type":"date", "id":"task-due-input", "name":"due_date"})
+                const dueDate = htmlHandler.generateHTMLElement('input', {
+                    "className":"task-input", 
+                    "type":"date",
+                    "id":"task-due-input",
+                    "name":"due_date",
+                    'required': 'true',
+                    "value": `${(edit==true)?props.due:""}`
+                })
                 const submitBtn = htmlHandler.generateHTMLElement('button', {"className":"task-create-button task-submit", "innerHTML":"Submit"})
                 const cancelBtn = htmlHandler.generateHTMLElement('button', {"className":"task-create-button task-cancel", "innerHTML":"Cancel"})
                 
@@ -69,13 +79,13 @@ const indexPage =  (()=>{
         const taskItem = htmlHandler.generateHTMLElement((type=="form")?"form":"a", (type=="form")?
             {"className":"task-item", "id":"task-form",}:
             {"className": "task-item", "id":`task-${props.id}`, "href":"javascript:void(0)"})
-        const taskLeft = _generateTaskLeft(type)
-        const taskRight = _generateTaskRight(type)
+        const taskLeft = _generateTaskLeft(type, props, edit)
+        const taskRight = _generateTaskRight(type, props, edit)
         taskItem.appendChild(taskLeft)
         taskItem.appendChild(taskRight)
         return taskItem
     }
-    const _deleteTaskItem = (type, id)=>{
+    const deleteTaskItem = (type, taskID)=>{
         if (type == "form")
         {
             document.querySelector('#task-form').remove()
@@ -84,13 +94,30 @@ const indexPage =  (()=>{
             document.querySelector('#addTask').disabled = false
         }
         else
-        {
-            functionInterface.taskForm('delete', "DELETE", id, "")
-            const taskItem = document.querySelector(`#task-${id}`)
+        {   
+            functionInterface.taskForm('delete', "DELETE", taskID, "")
+            const taskItem = document.querySelector(`#task-${taskID}`)
             taskItem.remove()
         }
        
     }
+    const editTaskItem = (taskID)=>{
+        let props = {}
+        const taskItem = document.querySelector(`#task-${taskID}`)
+        props['title'] = taskItem.querySelector('.task-title').innerHTML
+        props['due'] = taskItem.querySelector('.task-due i').innerHTML.trim()
+        let form = generateTaskItem('form', props, true)
+        taskItem.after(form)
+        taskItem.remove()
+        addBtnEvents.cancelTaskBtnEvent(true, taskItem)
+        addBtnEvents.submitTaskBtnEvent(edit)
+    }
+
+
+
+
+
+
     const _generateProjectItem = (type, props)=>{
         let results;
         if(type=="form")
@@ -101,7 +128,8 @@ const indexPage =  (()=>{
                 "type":"text",
                 "id":"project-title-input",
                 "placeholder":"Project:",
-                'name':"title"
+                'name':"title",
+                'required': 'true'
             })
             const projectTitleLabel = htmlHandler.generateHTMLElement('label', {
                 "className":"project-input-label project-title-label",
@@ -114,7 +142,8 @@ const indexPage =  (()=>{
                 "cols":"41",
                 "maxLength":"150",
                 "id":"project-description-input",
-                "placeholder":"Description:"
+                "placeholder":"Description:",
+                'required': 'true'
             })
             const projectDescriptionLabel = htmlHandler.generateHTMLElement('label', {
                 "className":"project-input-label project-description-label",
@@ -179,7 +208,6 @@ const indexPage =  (()=>{
                 "innerHTML":"+ Add a Project"})
 
             let result = htmlHandler.appendChildrenNodes(projectContainer, [projectTitle, projectList, addProjectBtn])
-            console.log(result.innerHTML)
             return result
         }
         const _generateTaskContainer = ()=>{
@@ -228,10 +256,11 @@ const indexPage =  (()=>{
         .then((data)=>{   
             for (let i = 0; i<data.length;i++)
             {
-                let taskItem = _generateTaskItem("item", data[i])
+                let taskItem = generateTaskItem("item", data[i])
                 document.querySelector('.task-list').appendChild(taskItem)
             }
             addBtnEvents.deleteTaskBtnEvent()
+            addBtnEvents.editTaskBtnEvent()
         })
         
         const indexContainer = _generateIndexContainer()
@@ -248,33 +277,43 @@ const indexPage =  (()=>{
         const addTaskBtnEvent = ()=>{
             const addTask = document.querySelector('#addTask')
             addTask.addEventListener('click', function(){
-                const taskForm = _generateTaskItem("form")
+                const taskForm = generateTaskItem("form")
                 document.querySelector('.task-list').appendChild(taskForm)
                 this.style.opacity = "0"
                 this.style.cursor = "default"
                 this.disabled = true
                 addBtnEvents.cancelTaskBtnEvent()
-                let projectID = document.querySelector('.active').id.charAt(document.querySelector('.active').id.length-1)
-                functionInterface.taskForm('create',"POST", "", projectID)
+                addBtnEvents.submitTaskBtnEvent()
+               
+
             })
         }
-        const cancelTaskBtnEvent = ()=>{
+        const cancelTaskBtnEvent = (edit, taskItem)=>{
             const cancelBtn = document.querySelector('.task-cancel')
-            cancelBtn.addEventListener('click', function(){
-                document.querySelector('#task-form').remove()
-                document.querySelector('#addTask').style.opacity = "1"
-                document.querySelector('#addTask').style.cursor = "pointer"
-                document.querySelector('#addTask').disabled = false
+            cancelBtn.addEventListener('click',()=>{
+         
+                if(edit==true)
+                {
+                    document.querySelector('#task-form').after(taskItem)
+                }
+                deleteTaskItem('form', '')
+                
             })
         }
-        const submitTaskBtnEvent = ()=>{
-            const submitBtn = document.querySelector('.task-submit')
-            submitBtn.addEventListener('click', ()=>{
-                document.querySelector('#task-form').remove()
-                console.log(document.querySelector('#task-form'))
-                document.querySelector('#addTask').style.opacity = "1"
-                document.querySelector('#addTask').style.cursor = "pointer"
-                document.querySelector('#addTask').disabled = false
+        const submitTaskBtnEvent = (edit)=>{
+            const form = document.querySelector('#task-form')
+            form.addEventListener('submit', (e)=>{
+                e.preventDefault()
+                let projectID = document.querySelector('.active').id.charAt(document.querySelector('.active').id.length-1)
+                if(edit==true)
+                {
+                    functionInterface.taskForm('update',"PUT", "", projectID)
+                }
+                else
+                {
+                    functionInterface.taskForm('create',"POST", "", projectID)
+                }
+                
             })
             
         }
@@ -282,9 +321,19 @@ const indexPage =  (()=>{
             document.querySelectorAll(".task-delete").forEach(taskBtn=>{
                 taskBtn.addEventListener('click', function(){
                     let parent = this.parentElement.parentElement.parentElement
-                    let id = parent.id.substring('5')
-                    _deleteTaskItem('item', id)
+                    let taskID = parent.id.substring('5')
+
+                    deleteTaskItem('item', taskID)
                     
+                })
+            })
+        }
+        const editTaskBtnEvent = ()=>{
+            document.querySelectorAll(".task-edit").forEach(editBtn=>{
+                editBtn.addEventListener('click', function(){
+                    let parent = this.parentElement.parentElement.parentElement
+                    let taskID = parent.id.substring('5')
+                    editTaskItem(taskID)
                 })
             })
         }
@@ -302,7 +351,6 @@ const indexPage =  (()=>{
         }
         const cancelProjectBtnEvent = ()=>{
             const cancelBtn = document.querySelector('.project-cancel')
-            console.log(cancelBtn)
             cancelBtn.addEventListener('click', function(e){
                 e.preventDefault()
                 document.querySelector('.project-form').remove()
@@ -311,9 +359,9 @@ const indexPage =  (()=>{
                 document.querySelector('#addProject').disabled = false
             })
         }
-        return {addTaskBtnEvent, cancelTaskBtnEvent, deleteTaskBtnEvent, addProjectBtnEvent, cancelProjectBtnEvent, submitTaskBtnEvent, }
+        return {addTaskBtnEvent, cancelTaskBtnEvent, deleteTaskBtnEvent, editTaskBtnEvent, addProjectBtnEvent, cancelProjectBtnEvent, submitTaskBtnEvent, }
     })()
-    return {generateMainPage, _generateTaskItem}
+    return {generateMainPage, generateTaskItem, deleteTaskItem}
 })()
 
 

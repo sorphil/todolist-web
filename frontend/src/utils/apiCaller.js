@@ -15,7 +15,8 @@ const apiCaller = (()=>
         })
         .then((response)=>response.json())
         .then((data)=>{
-            return data
+            console.log(data)
+            return data 
         })
     }
 
@@ -26,7 +27,7 @@ const apiCaller = (()=>
         })
         .then((response)=>response.json())
         .then((data)=>{
-            // console.log(data)
+            console.log(data)
             return data
         })
     }

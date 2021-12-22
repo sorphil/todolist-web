@@ -18,7 +18,7 @@ const formHandler = (()=>
         let data = {}
         formName = formName.toLowerCase()
         const form = document.querySelector(`#${formName}-form`)
-        console.log(form)
+        console.log(document.querySelector(`#task-form`))
         for (let i = 0, element; element = form[i]; i++) // Obtain form input values
         {
             if(element instanceof HTMLInputElement)
