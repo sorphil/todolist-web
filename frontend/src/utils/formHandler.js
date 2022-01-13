@@ -14,15 +14,16 @@ const formHandler = (()=>
  
         return data
     }
-    const getFormValues = (formName)=>{
+    const getFormValues = (formName, id)=>{
         let data = {}
         formName = formName.toLowerCase()
-        const form = document.querySelector(`#${formName}-form`)
-        console.log(document.querySelector(`#task-form`))
+        const form = document.querySelector(`#${formName}-form${(id)?`-${id}`:""}`)
+        console.log(form, `#${formName}-form${(id)?`-${id}`:""}`)
         for (let i = 0, element; element = form[i]; i++) // Obtain form input values
         {
-            if(element instanceof HTMLInputElement)
+            if(element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement)
             {
+                console.log(element)
                 if(element.name!="submit") // if it doesn't have a name, it's a submit button
                 {
                     data[element.name] = element.value

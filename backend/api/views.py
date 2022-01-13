@@ -7,6 +7,9 @@ from django.shortcuts import render
 from rest_framework.serializers import Serializer
 from django.contrib.auth import authenticate, login, logout
 from .models import Task, Project
+from django.views.decorators.csrf import csrf_exempt
+
+
 from django.contrib.auth.models import AnonymousUser, User
 from .serializers import LoginSerializer, ProjectSerializer, RegistrationSerializer, LoginSerializer, TaskSerializer, UserSerializer
 from rest_framework.decorators import api_view
@@ -74,11 +77,13 @@ def taskCreate(request):
 
 @api_view(['PUT'])
 def taskUpdate(request, pk):
+    request.data['user'] = request.user.id
     task = Task.objects.get(id = pk)
     serializer = TaskSerializer(instance = task, data=request.data)
     if serializer.is_valid():
         serializer.save()
-
+    else:
+        print(serializer.errors)
     return Response(serializer.data)
 
 @api_view(['DELETE'])
@@ -99,10 +104,11 @@ def projectList(request):
 def projectCreate(request):
 
     request.data['user'] = request.user.id
-    print(request.data)
     serializer = ProjectSerializer(data = request.data)
     if serializer.is_valid():
         serializer.save()
+    else:
+        print(serializer.errors)
     
     return Response(serializer.data)
 
@@ -161,6 +167,7 @@ def logout_view(request):
 
 
 @api_view(['POST'])
+
 def check_view(request):
 
     data = {}

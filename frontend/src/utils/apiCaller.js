@@ -32,9 +32,8 @@ const apiCaller = (()=>
         })
     }
 
-    const deleteCall = (prefix, type, id)=>{
-        console.log("ID", id)
-        return fetch(`${apiURL}${prefix}${type}/${id}`,{
+    const deleteCall = (prefix, type, taskID)=>{
+        return fetch(`${apiURL}${prefix}${type}/${taskID}`,{
             method:"DELETE",
             headers: headers,
         })
@@ -44,8 +43,21 @@ const apiCaller = (()=>
             return data
         })
     }
+
+    const putCall = (prefix, type, body, taskID)=>{
+        return fetch(`${apiURL}${prefix}${type}/${taskID}`,{
+            method:"PUT",
+            headers: headers,
+            body: JSON.stringify(body)
+        })
+        .then((response)=>response.json())
+        .then((data)=>{
+            console.log(data)
+            return data
+        })
+    }
     
-    return {postCall, getCall, deleteCall}
+    return {postCall, getCall, deleteCall, putCall}
 })()
 
 export default apiCaller

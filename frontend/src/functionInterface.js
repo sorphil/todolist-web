@@ -113,7 +113,7 @@ const functionInterface = (()=>{
             
         })
     }
-    const taskForm = (type, method, taskID, projectID)=>
+    const taskForm = (type, method, taskID, projectID, parentElement)=>
     {
         if (method=="POST")
         {
@@ -124,9 +124,10 @@ const functionInterface = (()=>{
             .then(data=>{
                 let taskItem = indexPage.generateTaskItem("item", data)
                 document.querySelector('.task-list').appendChild(taskItem)
+                indexPage.addBtnEvents.taskItemBtnEvents(taskItem)
                 
             })
-            .then(()=>indexPage.deleteTaskItem('form'))
+            .then(()=>indexPage.deleteItem('task', 'form'))
         }
         else if(method=="DELETE")
         {
@@ -135,9 +136,60 @@ const functionInterface = (()=>{
                 console.log(data)
             })
         }
+        else if(method=="PUT")
+        {
+            if(type=='update')
+            {
+                let body = formHandler.getFormValues("task", taskID)
+                body["project"] = projectID
+                console.log(body, "PUT")
+                apiCaller.putCall('task-',"update", body, taskID)
+                .then((data)=>{
+                    console.log(data, "PUT")
+                    let taskItem = indexPage.generateTaskItem("item", data)
+                    document.querySelector('.task-list').appendChild(taskItem)
+                    indexPage.addBtnEvents.taskItemBtnEvents(taskItem)
+                })
+                .then(()=>indexPage.deleteTaskItem('task', 'form'))
+            }
+            else
+            {
+                let body = {}
+                body['title'] = parentElement.querySelector('.task-title').innerHTML
+                body['due'] = parentElement.querySelector('.task-due i').innerHTML
+                body['completed']= parentElement.querySelector('.task-check input').checked
+                body["project"] = projectID
+                console.log(body)
+                apiCaller.putCall('task-',"update", body, taskID)
+            }
+               
+        }
     }
 
-    return {authenticationForm, startingPage, taskForm, changePage}
+    const projectForm = (type, method, projectID)=>{
+        if (method=="POST")
+        {
+            let body = formHandler.getFormValues("project")
+            console.log(body)
+            apiCaller.postCall("project-", type, body)
+            .then(data=>{
+                let projectItem = indexPage.generateProjectItem("item", data)
+                document.querySelector('.project-list').appendChild(projectItem)
+                indexPage.addBtnEvents.projectItemBtnEvents(projectItem)
+                
+            })
+            .then(()=>indexPage.deleteItem('task', 'form'))
+        }
+        else if (method=="DELETE")
+        {
+            apiCaller.deleteCall('project-',"delete", projectID)
+            .then((data)=>{
+                console.log(data)
+            })
+        }
+    }
+
+    return {authenticationForm, startingPage, taskForm, projectForm, changePage}
 })()
 
 export default functionInterface
