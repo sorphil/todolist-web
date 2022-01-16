@@ -17,7 +17,9 @@ const formHandler = (()=>
     const getFormValues = (formName, id)=>{
         let data = {}
         formName = formName.toLowerCase()
+        console.log(`#${formName}-form${(id)?`-${id}`:""}`)
         const form = document.querySelector(`#${formName}-form${(id)?`-${id}`:""}`)
+
         console.log(form, `#${formName}-form${(id)?`-${id}`:""}`)
         for (let i = 0, element; element = form[i]; i++) // Obtain form input values
         {

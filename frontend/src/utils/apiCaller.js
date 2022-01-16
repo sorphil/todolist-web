@@ -20,8 +20,8 @@ const apiCaller = (()=>
         })
     }
 
-    const getCall =  (prefix, type)=>{
-        return fetch(`${apiURL}${prefix}${type}`,{
+    const getCall =  (prefix, type, id)=>{
+        return fetch(`${apiURL}${prefix}${type}${id?`/${id}`:""}`,{
             method:"GET",
             headers: headers,
         })

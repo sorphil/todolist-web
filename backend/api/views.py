@@ -99,10 +99,15 @@ def projectList(request):
     print(projects)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def projectDetail(request, pk):
+    project = Project.objects.get(id = pk)
+    serializer = ProjectSerializer(project, many=False)
+    return Response(serializer.data)
+
 
 @api_view(['POST'])
 def projectCreate(request):
-
     request.data['user'] = request.user.id
     serializer = ProjectSerializer(data = request.data)
     if serializer.is_valid():
@@ -112,6 +117,22 @@ def projectCreate(request):
     
     return Response(serializer.data)
 
+@api_view(['PUT'])
+def projectUpdate(request, pk):
+    request.data['user'] = request.user.id
+    print(request.data)
+    project = Project.objects.get(id = pk)
+    serializer = ProjectSerializer(instance = project, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    else:
+        print(serializer.errors)
+    return Response(serializer.data)
+
+@api_view(['DELETE'])
+def projectDelete(request, pk):
+    Project.objects.get(id = pk).delete()
+    return Response('Project successfully deleted')
 
 #Registration/Login/Logout
 @api_view(['POST'])
