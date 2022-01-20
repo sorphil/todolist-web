@@ -586,6 +586,7 @@ textarea {
   opacity: 55%;
   -webkit-transition: all 0.1s;
   transition: all 0.1s;
+  z-index: 9999;
 }
 
 .task-delete:hover, .project-delete:hover {

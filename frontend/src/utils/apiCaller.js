@@ -15,7 +15,6 @@ const apiCaller = (()=>
         })
         .then((response)=>response.json())
         .then((data)=>{
-            console.log(data)
             return data 
         })
     }
@@ -27,7 +26,6 @@ const apiCaller = (()=>
         })
         .then((response)=>response.json())
         .then((data)=>{
-            console.log(data)
             return data
         })
     }
@@ -39,20 +37,18 @@ const apiCaller = (()=>
         })
         .then((response)=>response.json())
         .then((data)=>{
-            console.log(data)
             return data
         })
     }
 
-    const putCall = (prefix, type, body, taskID)=>{
-        return fetch(`${apiURL}${prefix}${type}/${taskID}`,{
+    const putCall = (prefix, type, body, id)=>{
+        return fetch(`${apiURL}${prefix}${type}/${id}`,{
             method:"PUT",
             headers: headers,
             body: JSON.stringify(body)
         })
         .then((response)=>response.json())
         .then((data)=>{
-            console.log(data)
             return data
         })
     }

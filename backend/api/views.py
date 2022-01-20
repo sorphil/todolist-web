@@ -73,6 +73,7 @@ def taskCreate(request):
     else:
         print(serializer.errors)
     
+    print(serializer.data)
     return Response(serializer.data)
 
 @api_view(['PUT'])
@@ -144,9 +145,18 @@ def registration_view(request):
             user = serializer.saveAccount()
             data['response'] = "Successfully registered a new user"
             data['email'] = user.email
-            data['username'] = user.username
+            data['user'] = user.username
             data['token']= Token.objects.get(user=user).key
             data['success'] = True
+
+            project_data ={'title':"Example Project",
+                           'description':"Example Description",
+                           'user': user.pk}
+            serializer = ProjectSerializer(data = project_data)
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                print(serializer.errors, "REGISTERRRRRRED")
         else:
             data = serializer.errors
             data['success'] = False

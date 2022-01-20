@@ -7,7 +7,6 @@ const indexPage =  (()=>{
     const deleteItem = (itemName, itemType, edit, ID)=>{
         if (itemType == "form")
         {
-            console.log(`#${itemName}-form${(edit)?`-${ID}`:""}`)
             document.querySelector(`#${itemName.trim()}-form${(edit)?`-${ID}`:""}`).remove()
             if (edit != true)
             {
@@ -15,20 +14,17 @@ const indexPage =  (()=>{
                 document.querySelector(`#add${itemName.charAt(0).toUpperCase() + itemName.slice(1)}`).style.cursor = "pointer"
                 document.querySelector(`#add${itemName.charAt(0).toUpperCase() + itemName.slice(1)}`).disabled = false
             }
-           
         }
         else
         {   
-            console.log(itemName, ID)
             functionInterface[`${itemName}Form`]('delete', "DELETE", ID, "")
             const item = document.querySelector(`#${itemName}-${ID}`)
             item.remove()
         }
        
     }
-    const editItem = (itemName, id, projectDescription)=>{
+    const editItem = (itemName, id)=>{
         let props = {}
-        console.log("EDIT")
         const item = document.querySelector(`#${itemName}-${id}`)
         let form;
         props['id']= id
@@ -40,17 +36,46 @@ const indexPage =  (()=>{
         }
         else
         {
+            let index = dataHandler.projects.findIndex(project=>project.pk==id)
             props['title'] = item.querySelector('.project-title').innerHTML
-         
-            props['description'] = projectDescription
-            console.log(props)
+            props['description'] = dataHandler.projects[index].description  
             form = generateProjectItem('form', props, true)
+          
            
         }
         item.after(form)
         item.remove()
         itemName == 'task'? addBtnEvents.taskFormBtnEvents(true, item, id, form): addBtnEvents.projectFormBtnEvents(true, item, id)
         
+    }
+    const generateItemList = (type)=>{
+        if (type=='task')
+        {
+            let projectID = dataHandler.activeProject.pk
+ 
+            for (let i = 0; i<dataHandler.tasks.length;i++)
+            {
+                if(projectID == dataHandler.tasks[i].project)
+                {
+                    let taskItem = generateTaskItem("item", dataHandler.tasks[i])
+                    document.querySelector('.task-list').appendChild(taskItem)
+                }
+            }
+            addBtnEvents.taskItemBtnEvents()
+        }
+        else
+        {
+            for (let i = 0; i<dataHandler.projects.length;i++)
+            {
+                let projectItem = generateProjectItem("item",dataHandler.projects[i])
+                if(i==0)
+                {
+                    projectItem.classList.add('active')
+                    dataHandler.activeProject = dataHandler.projects[0]
+                }
+                document.querySelector('.project-list').appendChild(projectItem)
+            }
+        }
     }
     const generateTaskItem = (type, props, edit)=>{
         const _generateTaskLeft = (type, props, edit)=>{
@@ -184,7 +209,7 @@ const indexPage =  (()=>{
         else
         {
             const projectItem = htmlHandler.generateHTMLElement('div', {"className":"project-item", "id":`project-${props.pk}`})
-            const projectTitle = htmlHandler.generateHTMLElement('div', {"className":"project-title", "innerHTML":props.title})
+            const projectTitle = htmlHandler.generateHTMLElement('a', {"className":"project-title", "innerHTML":props.title})
             const projectButtons = htmlHandler.generateHTMLElement('div', {"className":"project-buttons"})
             const projectEdit = htmlHandler.generateHTMLElement('a', {"className":"project-edit"})
             const projectDelete = htmlHandler.generateHTMLElement('a',{"className":"project-delete"})
@@ -259,41 +284,31 @@ const indexPage =  (()=>{
     }
     const generateMainPage = ()=>{
         const header = _generateHeader()
-        let projects = dataHandler.getUserProjects()
+        dataHandler.getUserProjects()
         .then((data)=>{
             document.querySelector('#task-header-main').innerHTML = data[0].title
             document.querySelector('#task-header-sub').innerHTML = data[0].description
-            for (let i = 0; i<data.length;i++)
-            {
-                let projectItem = generateProjectItem("item",data[i])
-                if(i==0)
-                {
-                    projectItem.classList.add('active')
-                    console.log(projectItem)
-                }
-                document.querySelector('.project-list').appendChild(projectItem)
-            }
-        }).then(()=>addBtnEvents.projectItemBtnEvents())
-        dataHandler.getUserTasks()
-        .then((data)=>{   
-            for (let i = 0; i<data.length;i++)
-            {
-                let taskItem = generateTaskItem("item", data[i])
-                document.querySelector('.task-list').appendChild(taskItem)
-            }
-            addBtnEvents.taskItemBtnEvents()
-            addBtnEvents.checkBoxEvent()
-
+            dataHandler.projects = data
         })
+        .then(()=>generateItemList('project'))
+        .then(()=>addBtnEvents.projectItemBtnEvents())
+        .then(()=>{
+            dataHandler.getUserTasks()
+            .then((data)=> dataHandler.tasks = data)
+            .then(()=>generateItemList('task'))
+        })
+
+        
         
         const indexContainer = _generateIndexContainer()
-        
         document.querySelector('body').appendChild(header)
         document.querySelector('body').appendChild(indexContainer)
         addBtnEvents.addTaskBtnEvent()
         addBtnEvents.addProjectBtnEvent()
         
     }
+
+
 
 
 
@@ -311,97 +326,94 @@ const indexPage =  (()=>{
 
             })
         }
-        const checkBoxEvent = ()=>{
-            document.querySelectorAll(".task-check input").forEach(checkBox=>{
-                checkBox.addEventListener('click', function(){
-                    let projectID = document.querySelector('.active').id.charAt(document.querySelector('.active').id.length-1)
-                    let parent = this.parentElement.parentElement.parentElement
-                    let taskID = parent.id.substring('5')
-                    functionInterface.taskForm('checkbox',"PUT", taskID, projectID, parent)
+        const taskFormBtnEvents = (edit, taskItem, taskID)=>{
+            const _cancelTaskBtnEvent = (edit, taskItem, taskID)=>{
+                const cancelBtn = document.querySelector(`#task-form${(edit)?`-${taskID}`:""}`).querySelector('.task-cancel')
+                cancelBtn.addEventListener('click',(e)=>{
+                    e.preventDefault()
+                    if(edit==true)
+                    {
+                        document.querySelector(`#task-form-${taskID}`).after(taskItem)
+                    }
+                    deleteItem('task','form', edit, taskID)
+                })
+            }
+            const _submitTaskBtnEvent = (edit, taskID)=>{
+                const form = document.querySelector(`#task-form${(edit)?`-${taskID}`:""}`)
+                form.addEventListener('submit', (e)=>{
+                    e.preventDefault()
+                    let projectID = dataHandler.activeProject.pk
+                    if(edit==true)
+                    {
+                        functionInterface.taskForm('update',"PUT", taskID, projectID)
+                    }
+                    else
+                    {
+                        functionInterface.taskForm('create',"POST", "", projectID)
+                    }
                     
                 })
-            })
-        }
- 
+    
+            }
 
-        const taskFormBtnEvents = (edit, taskItem, taskID)=>{
-            cancelTaskBtnEvent(edit, taskItem, taskID)
-            submitTaskBtnEvent(edit, taskID)
+            _cancelTaskBtnEvent(edit, taskItem, taskID)
+            _submitTaskBtnEvent(edit, taskID)
         }
-        const cancelTaskBtnEvent = (edit, taskItem, taskID)=>{
-            const cancelBtn = document.querySelector(`#task-form${(edit)?`-${taskID}`:""}`).querySelector('.task-cancel')
-            cancelBtn.addEventListener('click',(e)=>{
-                e.preventDefault()
-                if(edit==true)
-                {
-                    document.querySelector(`#task-form-${taskID}`).after(taskItem)
+        // add events individually instead of using forEach
+        const taskItemBtnEvents = (taskItem)=>{
+            const _deleteTaskBtnEvent = (taskItem)=>{
+                const deleteTaskEvent = (item)=>{
+                    let parent = item.parentElement.parentElement.parentElement
+                    let taskID = parent.id.substring('5')
+                    let index = dataHandler.tasks.findIndex(task=>task.id==taskID)
+                    dataHandler.tasks.splice(index,1)
+                    deleteItem('task','item', false, taskID)
                 }
-                deleteItem('task','form', edit, taskID)
-            })
-        }
-        const submitTaskBtnEvent = (edit, taskID)=>{
-            const form = document.querySelector(`#task-form${(edit)?`-${taskID}`:""}`)
-            form.addEventListener('submit', (e)=>{
-                e.preventDefault()
-                let projectID = document.querySelector('.active').id.charAt(document.querySelector('.active').id.length-1)
-                if(edit==true)
+                if (taskItem)
                 {
-                    functionInterface.taskForm('update',"PUT", taskID, projectID)
+                    taskItem.querySelector(".task-delete").addEventListener('click', function(){deleteTaskEvent(this)})
                 }
                 else
                 {
-                    functionInterface.taskForm('create',"POST", "", projectID)
+                    document.querySelectorAll(".task-delete").forEach(taskBtn=>{
+                        taskBtn.addEventListener('click', function(){deleteTaskEvent(this)})
+                    })
                 }
-                
-            })
-
-        }
-
-        
-        // add events individually instead of using forEach
-        const taskItemBtnEvents = (taskItem)=>{
-            deleteTaskBtnEvent(taskItem)
-            editTaskBtnEvent(taskItem)
-            checkBoxEvent(taskItem)
-        }
-        const deleteTaskBtnEvent = (taskItem)=>{
-            const deleteTaskEvent = (item)=>{
-                let parent = item.parentElement.parentElement.parentElement
-                let taskID = parent.id.substring('5')
-                deleteItem('task','item', false, taskID)
+               
             }
-            if (taskItem)
-            {
-                taskItem.querySelector(".task-delete").addEventListener('click', function(){deleteTaskEvent(this)})
+            const _editTaskBtnEvent = (taskItem)=>{
+                const editTaskEvent = (item)=>{
+                    let parent = item.parentElement.parentElement.parentElement
+                    let taskID = parent.id.substring('5')
+                    editItem('task', taskID)
+                }
+                if(taskItem)
+                {
+                    taskItem.querySelector(".task-edit").addEventListener('click', function(){editTaskEvent(this)})
+                }
+                else
+                {
+                    document.querySelectorAll(".task-edit").forEach(editBtn=>{
+                        editBtn.addEventListener('click', function(){editTaskEvent(this)})
+                    })
+                }
             }
-            else
-            {
-                document.querySelectorAll(".task-delete").forEach(taskBtn=>{
-                    taskBtn.addEventListener('click', function(){deleteTaskEvent(this)})
+            const _checkBoxEvent = ()=>{
+                document.querySelectorAll(".task-check input").forEach(checkBox=>{
+                    checkBox.addEventListener('click', function(){
+                        let projectID = dataHandler.activeProject.pk
+                        let parent = this.parentElement.parentElement.parentElement
+                        let taskID = parent.id.substring('5')
+                        functionInterface.taskForm('checkbox',"PUT", taskID, projectID, parent)
+                        
+                    })
                 })
             }
-           
+            _deleteTaskBtnEvent(taskItem)
+            _editTaskBtnEvent(taskItem)
+            _checkBoxEvent(taskItem)
         }
-        const editTaskBtnEvent = (taskItem)=>{
-            const editTaskEvent = (item)=>{
-                let parent = item.parentElement.parentElement.parentElement
-                let taskID = parent.id.substring('5')
-                editItem('task', taskID)
-            }
-            if(taskItem)
-            {
-                taskItem.querySelector(".task-edit").addEventListener('click', function(){editTaskEvent(this)})
-            }
-            else
-            {
-                document.querySelectorAll(".task-edit").forEach(editBtn=>{
-                    editBtn.addEventListener('click', function(){editTaskEvent(this)})
-                })
-            }
-        }
-
-
-        
+         
         const addProjectBtnEvent = ()=>{
             const addProject = document.querySelector('#addProject')
             addProject.addEventListener('click', function(){
@@ -415,78 +427,119 @@ const indexPage =  (()=>{
             })
         }
         const projectFormBtnEvents = (edit, projectItem, projectID)=>{
-            cancelProjectBtnEvent(edit, projectItem, projectID)
-            submitProjectBtnEvent(edit, projectID)
+            const _cancelProjectBtnEvent = (edit, projectItem, projectID)=>{
+                const cancelBtn = document.querySelector(`#project-form${(edit)?`-${projectID}`:""}`).querySelector('.project-cancel')
+                cancelBtn.addEventListener('click', function(e){
+                    e.preventDefault()
+                    if(edit==true)
+                    {
+                        document.querySelector(`#project-form-${projectID}`).after(projectItem)
+                    }
+                    deleteItem('project', 'form', edit, projectID)
+                })
+            }
+            const _submitProjectBtnEvent = (edit, projectID)=>{
+                const form = document.querySelector(`#project-form${(edit)?`-${projectID}`:""}`)
+                form.addEventListener('submit', (e)=>{
+                    e.preventDefault()
+                    if(edit==true)
+                    {
+                        functionInterface.projectForm('update',"PUT", projectID, projectItem)
+                    }
+                    else
+                    {
+                        functionInterface.projectForm('create',"POST" ,projectID)
+                    }
+                    
+                })
+            }
+            _cancelProjectBtnEvent(edit, projectItem, projectID)
+            _submitProjectBtnEvent(edit, projectID)
         }
-        const cancelProjectBtnEvent = (edit, projectItem, projectID)=>{
-            const cancelBtn = document.querySelector(`#project-form${(edit)?`-${projectID}`:""}`).querySelector('.project-cancel')
-            console.log(cancelBtn)
-            cancelBtn.addEventListener('click', function(e){
-                e.preventDefault()
-                if(edit==true)
-                {
-                    document.querySelector(`#project-form-${projectID}`).after(projectItem)
+        const projectItemBtnEvents = (projectItem)=>{
+            const _deleteProjectBtnEvent = (projectItem)=>{
+                const deleteProjectEvent = (item)=>{
+                    apiCaller.getCall('project-',"list")
+                    .then((data)=>{
+                        if (data.length==1)
+                        {
+                            alert("Can't delete only project")
+                            return
+                        }
+                        else
+                        {
+                      
+                            let parent = item.parentElement.parentElement
+                            let projectID = parent.id.substring('8')
+                            if(projectID == dataHandler.activeProject.pk)
+                            {
+                                alert("Can't delete active project")
+                                return;
+                            }
+                            deleteItem('project', 'item', false, projectID)
+                        }
+                    })
+                    
                 }
-                deleteItem('project', 'form', edit, projectID)
-            })
-        }
-
-        const submitProjectBtnEvent = (edit, projectID)=>{
-            const form = document.querySelector(`#project-form${(edit)?`-${projectID}`:""}`)
-            form.addEventListener('submit', (e)=>{
-                e.preventDefault()
-                if(edit==true)
+                if (projectItem)
                 {
-                    functionInterface.projectForm('update',"PUT", projectID)
+                    projectItem.querySelector(".project-delete").addEventListener('click', function(){deleteProjectEvent(this)})
                 }
                 else
                 {
-                    functionInterface.projectForm('create',"POST" ,projectID)
+                    document.querySelectorAll(".project-delete").forEach(projectBtn=>{projectBtn.addEventListener('click', function(){deleteProjectEvent(this)})})
                 }
-                
-            })
-        }
-
-
-        const projectItemBtnEvents = (projectItem)=>{
-            deleteProjectBtnEvent(projectItem)
-            editProjectBtnEvent(projectItem)
-        }
-        const deleteProjectBtnEvent = (projectItem)=>{
-            const deleteProjectEvent = (item)=>{
-                let parent = item.parentElement.parentElement
-                let projectID = parent.id.substring('8')
-                deleteItem('project', 'item', false, projectID)
             }
-            if (projectItem)
+            const _editProjectBtnEvent = (projectItem)=>{
+                const editProjectEvent = (item)=>{
+                    let parent = item.parentElement.parentElement
+                    let projectID = parent.id.substring('8')
+                    editItem('project', projectID)  
+                }
+    
+                if (projectItem)
+                {
+                    projectItem.querySelector(".project-edit").addEventListener('click', function(){editProjectEvent(this)})
+                }
+                else
+                {
+                    document.querySelectorAll(".project-edit").forEach(editBtn=>{editBtn.addEventListener('click', function(){editProjectEvent(this)})})
+                }
+            }
+            const _projectBtnChange = (projectItem)=>
             {
-                projectItem.querySelector(".project-delete").addEventListener('click', function(){deleteProjectEvent(this)})
+                const changeProjects = (projectItem)=>
+                {   
+                   
+                    let active = document.querySelector('.active')
+                    if(active==projectItem){return}
+                    else
+                    {
+                        active.classList.remove('active')
+                        projectItem.classList.add('active')
+                        let index = dataHandler.projects.findIndex(project=>project.pk==projectItem.id.substring(8))
+                        dataHandler.activeProject = dataHandler.projects[index]
+                        document.querySelector('#task-header-main').innerHTML = dataHandler.activeProject.title
+                        document.querySelector('#task-header-sub').innerHTML = dataHandler.activeProject.description
+                        document.querySelector('.task-list').innerHTML = ""
+                        generateItemList('task')
+                    }
+                  
+                  
+            
+                }
+                if (projectItem) {projectItem.querySelector('.project-title').addEventListener('click',function(){changeProjects(this.parentElement)})}
+                else {document.querySelectorAll('.project-title').forEach(projectItem=>projectItem.addEventListener('click', function(){changeProjects(this.parentElement)}))}
             }
-            else
-            {
-                document.querySelectorAll(".project-delete").forEach(projectBtn=>{projectBtn.addEventListener('click', function(){deleteProjectEvent(this)})})
-            }
+            _deleteProjectBtnEvent(projectItem)
+            _editProjectBtnEvent(projectItem)
+            _projectBtnChange(projectItem)
         }
-        const editProjectBtnEvent = (projectItem)=>{
-            const editProjectEvent = (item)=>{
-                let parent = item.parentElement.parentElement
-                let projectID = parent.id.substring('8')
-                apiCaller.getCall('project-',"detail", projectID)
-                .then(data=>editItem('project', projectID, data.description))   
-            }
+        
 
-            if (projectItem)
-            {
-                projectItem.querySelector(".project-edit").addEventListener('click', function(){deleteProjectEvent(this)})
-            }
-            else
-            {
-                document.querySelectorAll(".project-edit").forEach(editBtn=>{editBtn.addEventListener('click', function(){editProjectEvent(this)})})
-            }
-        }
-
-        return {addTaskBtnEvent, taskFormBtnEvents, taskItemBtnEvents, addProjectBtnEvent, projectFormBtnEvents, projectItemBtnEvents, checkBoxEvent,}
+        return {addTaskBtnEvent, taskFormBtnEvents, taskItemBtnEvents, addProjectBtnEvent, projectFormBtnEvents, projectItemBtnEvents}
     })()
+
     return {generateMainPage, generateTaskItem, generateProjectItem, deleteItem, addBtnEvents}
 })()
 
