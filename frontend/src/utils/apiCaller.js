@@ -3,7 +3,7 @@ import tokenHandler from "./tokenHandler"
 const apiCaller = (()=>
 {
     let headers = tokenHandler.headers
-    let apiURL = 'http://sorphil.pythonanywhere.com/todos/api/v1/'
+    let apiURL = 'https://sorphil.pythonanywhere.com/todos/api/v1/'
 
     const postCall = (prefix, type, body)=>
     {
