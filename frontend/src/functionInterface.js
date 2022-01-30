@@ -121,7 +121,6 @@ const functionInterface = (()=>{
             body["project"] = projectID
             body["pub_date"] = new Date().toISOString().split('T')[0]
             
-            async function createTask = ()
             apiCaller.postCall("task-", type, body)
             .then(data=>{
                 dataHandler.tasks.push(data)
