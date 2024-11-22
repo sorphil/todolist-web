@@ -1,6 +1,4 @@
-# To Do List
-## OdinProject Javascript Project 4
-
+## To Do List
 ### Live Demo
 [To-Do Web App 📒](https://sorphil.github.io/To-Do-List/)   
 
